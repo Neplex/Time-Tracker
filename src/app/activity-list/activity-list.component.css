@@ -1,0 +1,21 @@
+.toolbar-divider {
+  flex: 1 1 auto;
+}
+
+#fab {
+  display: block;
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+}
+
+mat-sidenav-container, .container {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 200px;
+}
