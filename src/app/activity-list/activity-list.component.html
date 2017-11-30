@@ -1,15 +1,22 @@
 <mat-sidenav-container>
   <!-- drawer -->
   <mat-sidenav #sidenav> <!-- mode="side" opened="true" -->
-    <mat-list dense>
-      <mat-list-item> All </mat-list-item>
-      <mat-list-item> Add </mat-list-item>
+    <mat-nav-list>
+      <mat-list-item (click)="setCategory(null); sidenav.close()">
+        <mat-icon matListIcon>list</mat-icon>
+        <h3 matLine>All</h3>
+      </mat-list-item>
+      <a mat-list-item href="add/category">
+        <mat-icon matListIcon>add</mat-icon>
+        <h3 matLine>New category</h3>
+      </a>
       <mat-divider></mat-divider>
-      <mat-list-item> Category 1 </mat-list-item>
-      <mat-list-item> Category 2 </mat-list-item>
-      <mat-list-item> Category 3 </mat-list-item>
-      <mat-list-item> Category 4 </mat-list-item>
-    </mat-list>
+      <h3 matSubheader>Categories</h3>
+      <mat-list-item *ngFor="let cat of categories" (click)="setCategory(cat); sidenav.close()">
+        <mat-icon matListIcon>{{cat.icon}}</mat-icon>
+        <h3 matLine>{{cat.name}}</h3>
+      </mat-list-item>
+    </mat-nav-list>
   </mat-sidenav>
 
   <div class="container">
@@ -34,17 +41,17 @@
     </mat-toolbar>
 
     <!-- list -->
-    <mat-list>
+    <mat-nav-list>
       <mat-list-item *ngFor="let activity of activities">
         <h3 matLine> {{activity.name}} </h3>
         <p matLine>
           <span> {{activity.description}} </span>
         </p>
         <button mat-icon-button>
-            <mat-icon>access_time</mat-icon>
-         </button>
+          <mat-icon>access_time</mat-icon>
+        </button>
       </mat-list-item>
-    </mat-list>
+    </mat-nav-list>
 
     <!-- FAB -->
     <a mat-fab id="fab" href="activities/test">

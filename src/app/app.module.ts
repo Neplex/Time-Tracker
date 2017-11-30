@@ -19,6 +19,8 @@ const routes: Routes = [
   { path: 'activities', component: ActivityListComponent },
   { path: 'activities/:id', component: ActivityComponent },
   { path: 'categories/:id', component: CategoryComponent },
+  { path: 'add/activity', component: ActivityComponent },
+  { path: 'add/category', component: CategoryComponent },
   { path: 'calendar', component: CalendarComponent },
   { path: 'stats', component: StatsComponent },
   { path: '**', redirectTo: 'activities' }
