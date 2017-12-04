@@ -1,4 +1,5 @@
 export class Category {
-  name: string;
-  icon: string; // MD icon name ?
+
+  public name: string;
+  public icon: string; // MD icon name ?
 }

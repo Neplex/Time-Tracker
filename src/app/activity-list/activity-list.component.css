@@ -4,7 +4,7 @@
 
 #fab {
   display: block;
-  position: absolute;
+  position: fixed;
   right: 1em;
   bottom: 1em;
 }
@@ -17,5 +17,5 @@ mat-sidenav-container, .container {
 }
 
 mat-sidenav {
-  width: 200px;
+  width: 15em;
 }

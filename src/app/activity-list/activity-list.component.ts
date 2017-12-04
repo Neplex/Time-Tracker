@@ -9,26 +9,58 @@ import { Category } from '../category';
 })
 export class ActivityListComponent implements OnInit {
 
-  constructor() { }
+  public categories: Category[];
+  public activities: Activity[];
+  public currentActivity: Activity = null;
+  public time: Date;
+
+  constructor() { /* NOTHING TO DO */ }
 
   ngOnInit() {
+    this.categories = CATEGORIES;
+    this.setCategory(null);
+
+    // Update the time spend on the active activity
+    setInterval(() => {
+      if (this.currentActivity != null) {
+        this.time = new Date(this.currentActivity.getCurrentTime());
+      }
+    }, 500);
   }
 
-  categoryFilter: Category = null;
-  categories: Category[] = CATEGORIES;
-  activities: Activity[] = ACTIVITIES;
+  // Set the current category and update the activities list
+  setCategory(category: Category): void {
+    this.activities = [];
+    for (let i = 0; i < 10; i++) {
+      let act: Activity = new Activity();
+      act.name = act.description = "Activity " + i;
+      this.activities.push(act);
+    }
+  }
 
-  setCategory(category: Category) {
-    this.categoryFilter = category;
-    if (this.categoryFilter != null) {
-      this.activities = [];
-      for (let i = 0; i < ACTIVITIES.length; i++) {
-        if (ACTIVITIES[i].categories.indexOf(this.categoryFilter) > -1) {
-          this.activities.push(ACTIVITIES[i]);
-        }
-      }
+  // Stop the active activity
+  stopActivity() {
+    if (this.currentActivity != null) {
+      this.currentActivity.stop();
+      this.currentActivity = null;
+    }
+  }
+
+  // Toogle an activity, stop the previous if it running
+  toogleActivity(activity: Activity) {
+    if (this.currentActivity == null) {
+      this.currentActivity = activity;
+      this.currentActivity.start();
+
     } else {
-      this.activities = ACTIVITIES;
+      this.currentActivity.stop();
+
+      if (this.currentActivity != activity) {
+        this.currentActivity = activity;
+        this.currentActivity.start();
+      } else {
+        this.currentActivity = null;
+      }
     }
   }
 }
@@ -39,12 +71,4 @@ const CATEGORIES: Category[] = [
   { "name": "Call", "icon": "call" },
   { "name": "Games", "icon": "casino" },
   { "name": "Movies", "icon": "movies" }
-]
-
-const ACTIVITIES: Activity[] = [
-  { "name": "Activity 1", "description": "Activity 1", "color": "blue", "categories": [CATEGORIES[0], CATEGORIES[1]], "time_slots": [] },
-  { "name": "Activity 2", "description": "Activity 2", "color": "blue", "categories": [CATEGORIES[0]], "time_slots": [] },
-  { "name": "Activity 3", "description": "Activity 3", "color": "blue", "categories": [CATEGORIES[0]], "time_slots": [] },
-  { "name": "Activity 4", "description": "Activity 4", "color": "blue", "categories": [CATEGORIES[3], CATEGORIES[4]], "time_slots": [] },
-  { "name": "Activity 5", "description": "Activity 5", "color": "blue", "categories": [CATEGORIES[3]], "time_slots": [] }
 ]
