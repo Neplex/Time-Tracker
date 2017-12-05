@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { APP_NAME } from '../global';
 import { Activity } from '../activity';
 import { Category } from '../category';
 
@@ -13,6 +14,7 @@ export class ActivityListComponent implements OnInit {
   public activities: Activity[];
   public currentActivity: Activity = null;
   public time: Date;
+  public app_name: string = APP_NAME;
 
   constructor() { /* NOTHING TO DO */ }
 
