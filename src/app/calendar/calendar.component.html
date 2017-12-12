@@ -5,7 +5,7 @@
   <span>Calendar</span>
 
   <!-- <mat-form-field>
-    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+    <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="setDate($event)">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field> -->
@@ -13,98 +13,21 @@
 
 <!-- Calendar -->
 <div calendar class="mat-typography">
-  <span calendarMonth>Novembre 2017</span>
+  <ng-container *ngFor="let month of months">
+    <span calendarMonth>{{ month.date | date:'MMMM yyyy' }}</span>
 
-  <span calendarDay>8<small>ven.</small></span>
-  <mat-card class="blue">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
+    <ng-container *ngFor="let day of month.days">
+      <span calendarDay [id]="day.date | date:'yyyyMMd'">
+          {{ day.date | date:'dd' }}
+          <small>{{ day.date | date:'EE' }}.</small>
+        </span>
 
-  <mat-card class="green">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
+      <mat-card *ngFor="let event of day.events" [ngClass]="event.color">
+        <mat-card-title>{{ event.name | titlecase }}</mat-card-title>
+        <mat-card-subtitle>{{ event.timeSlot.start | date:'HH:mm:ss' }} - {{ event.timeSlot.end | date:'HH:mm:ss' }}</mat-card-subtitle>
+        <!-- <mat-card-content>{{ event.timeSlot.elapsedTime() | date:'HH:mm:ss' }}</mat-card-content> -->
+      </mat-card>
 
-  <span calendarMonth>Decembre 2017</span>
-
-  <span calendarDay>8<small>ven.</small></span>
-  <mat-card class="blue">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card class="green">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card>
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <h3 calendarDay>9<small>sam.</small></h3>
-  <mat-card class="blue">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card class="blue">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card class="teal">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <h3 calendarDay>10<small>dim.</small></h3>
-  <mat-card class="blue">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card class="amber">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card class="red">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card class="purple">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card class="blue">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card class="red">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <h3 calendarDay>11<small>lun.</small></h3>
-
-  <h3 calendarDay>12<small>mar.</small></h3>
-
-  <h3 calendarDay>13<small>mer.</small></h3>
-  <mat-card class="blue">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <mat-card class="blue">
-    <mat-card-title>Activity 1</mat-card-title>
-    <mat-card-subtitle>09:12:10 - 10:23:11</mat-card-subtitle>
-  </mat-card>
-
-  <!-- <span calendarMonth>Janvier 2018</span> -->
+    </ng-container>
+  </ng-container>
 </div>
