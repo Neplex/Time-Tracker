@@ -17,3 +17,45 @@ Angular material table: (https://material.angular.io/components/table/overview)
 - sorting
 - filtering
 -->
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+      <mat-cell *matCellDef="let activity"> {{activity.description}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let activity"> {{activity.name}} </mat-cell>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="elapse">
+      <mat-header-cell *matHeaderCellDef> Elapse </mat-header-cell>
+      <mat-cell *matCellDef="let activity"> {{calculTemps(activity)}} </mat-cell>
+    </ng-container>
+
+  <!-- Symbol Column
+    <ng-container matColumnDef="symbol">
+      <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+    </ng-container>
+-->
+    <mat-header-row *matHeaderRowDef="displayedCols"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedCols;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 20]">
+  </mat-paginator>
+</div>
+
+
+<!-- Copyright 2017 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
