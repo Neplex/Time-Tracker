@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { APP_NAME } from '../global';
 import { Activity } from '../activity';
 import { Category } from '../category';
 
@@ -13,6 +14,7 @@ export class ActivityListComponent implements OnInit {
   public activities: Activity[];
   public currentActivity: Activity = null;
   public time: Date;
+  public app_name: string = APP_NAME;
 
   constructor() { /* NOTHING TO DO */ }
 
@@ -34,6 +36,7 @@ export class ActivityListComponent implements OnInit {
     for (let i = 0; i < 10; i++) {
       let act: Activity = new Activity();
       act.name = act.description = "Activity " + i;
+      act.color = "blue";
       this.activities.push(act);
     }
   }

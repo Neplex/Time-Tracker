@@ -16,7 +16,7 @@
       <h3 matSubheader *ngIf="categories.length">Categories</h3>
       <mat-list-item *ngFor="let cat of categories" (click)="setCategory(cat); sidenav.close()">
         <mat-icon matListIcon>{{cat.icon}}</mat-icon>
-        <h3 matLine>{{cat.name}}</h3>
+        <h3 matLine>{{cat.name | titlecase}}</h3>
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
@@ -28,7 +28,7 @@
         <button mat-icon-button (click)="sidenav.open()">
           <mat-icon aria-label="Menu">menu</mat-icon>
         </button>
-        <span>Time Tracker</span>
+        <span>{{ app_name | titlecase }}</span>
 
         <span class="toolbar-divider"></span>
 
@@ -43,9 +43,12 @@
         </a>
       </mat-toolbar-row>
 
+      <mat-toolbar-row chrono *ngIf="currentActivity">
+        <h1>{{time | date:'HH:mm'}}<small>{{time | date:'ss'}}</small></h1>
+      </mat-toolbar-row>
+
       <mat-toolbar-row *ngIf="currentActivity">
-        {{currentActivity.name}} <span class="toolbar-divider"></span>
-        {{time | date:'HH:mm:ss'}} <span class="toolbar-divider"></span>
+        {{currentActivity.name | titlecase}} <span class="toolbar-divider"></span>
         <button mat-icon-button class="toto" (click)="stopActivity()">
           <mat-icon>done</mat-icon>
         </button>
@@ -55,9 +58,10 @@
     <!-- list -->
     <mat-nav-list>
       <mat-list-item *ngFor="let activity of activities">
-        <h3 matLine>{{activity.name}}</h3>
+        <span [ngClass]="activity.color" mat-list-icon></span>
+        <h3 matLine>{{activity.name | titlecase}}</h3>
         <a href="activities/{{activity.name}}" matLine>
-          {{activity.description}}
+          {{activity.description | lowercase}}
         </a>
         <button mat-icon-button (click)="toogleActivity(activity)">
           <mat-icon>access_time</mat-icon>
