@@ -26,19 +26,22 @@
   <mat-form-field>
     <mat-select placeholder="Color" [(value)]="activity.color">
       <mat-option></mat-option>
-      <mat-option *ngFor="let color of colors" [value]="color">{{ color | titlecase}}</mat-option>
+      <mat-option *ngFor="let color of colors" [value]="color">
+        <span [ngClass]="color" class="colorList"></span>
+        {{ color | titlecase}}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
   <div class="button-raw">
     <!-- <button mat-raised-button color="accent" (click)="afficherActivity();compareCat();"> -->
-    <button mat-raised-button color="accent">
-      <mat-icon aria-label="Save">check</mat-icon>
-      Save
-    </button>
     <button mat-raised-button color="warn">
       <mat-icon aria-label="Delete">close</mat-icon>
       Delete
+    </button>
+    <button mat-raised-button color="accent">
+      <mat-icon aria-label="Save">check</mat-icon>
+      Save
     </button>
   </div>
 </form>

@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Activity } from '../activity';
 import { Category } from '../category';
+import { AVAILABLE_COLORS } from '../global';
 
 @Component({
   selector: 'app-activity',
@@ -22,7 +23,7 @@ export class ActivityComponent implements OnInit {
   constructor(private route: ActivatedRoute) {
     this.activity = new Activity();
     this.categories = CATEGORIES;
-    this.colors = COLORS;
+    this.colors = AVAILABLE_COLORS;
     this.toppings = new FormControl();
   }
 
@@ -54,8 +55,4 @@ const CATEGORIES: Category[] = [
   { "name": "Call", "icon": "call" },
   { "name": "Games", "icon": "casino" },
   { "name": "Movies", "icon": "movies" }
-]
-
-const COLORS: string[] = [
-  "red", "green", "blue"
 ]
