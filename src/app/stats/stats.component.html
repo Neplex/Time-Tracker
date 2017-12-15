@@ -18,24 +18,23 @@ Angular material table: (https://material.angular.io/components/table/overview)
 - filtering
 -->
 
-<div class="example-container mat-elevation-z8">
-  <mat-table #table [dataSource]="dataSource">
-
-    <!-- Position Column -->
-    <ng-container matColumnDef="description">
-      <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
-      <mat-cell *matCellDef="let activity"> {{activity.description}} </mat-cell>
-    </ng-container>
+<div class="liste_activities">
+  <div>
+    <mat-form-field>
+      <input matInput (keyup)="filterTable($event.target.value)" placeholder="filter" />
+    </mat-form-field>
+  </div>
+  <mat-table #table [dataSource]="dataSource" matSort>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
       <mat-cell *matCellDef="let activity"> {{activity.name}} </mat-cell>
     </ng-container>
 
     <!-- Weight Column -->
     <ng-container matColumnDef="elapse">
-      <mat-header-cell *matHeaderCellDef> Elapse </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Elapse </mat-header-cell>
       <mat-cell *matCellDef="let activity"> {{calculTemps(activity)}} </mat-cell>
     </ng-container>
 
@@ -49,7 +48,7 @@ Angular material table: (https://material.angular.io/components/table/overview)
     <mat-row *matRowDef="let row; columns: displayedCols;"></mat-row>
   </mat-table>
 
-  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
+  <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="pagePaginator">
   </mat-paginator>
 </div>
 
