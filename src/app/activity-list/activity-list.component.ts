@@ -36,6 +36,7 @@ export class ActivityListComponent implements OnInit {
     for (let i = 0; i < 10; i++) {
       let act: Activity = new Activity();
       act.name = act.description = "Activity " + i;
+      act.color = "blue";
       this.activities.push(act);
     }
   }
