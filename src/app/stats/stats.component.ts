@@ -13,9 +13,9 @@ export class StatsComponent implements OnInit {
   /*Prepare table*/
   pageSize = 10;
   pagePaginator = [5,10,20];
-  displayedCols = ["name","elapse"];
+  displayedCols = ["name","time"];
   categories: Category[] = [];
-  acvitivies: Activity[] = [];
+  activities: Activity[] = [];
   dataSource:MatTableDataSource<Activity> = null;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -31,18 +31,17 @@ export class StatsComponent implements OnInit {
     /**********tests**********/
 
 
-    //creating acvitivies
+    //creating activities
 
     let c = new Category();
     c.name = "development"
     this.categories.push(c);
-
     let a = new Activity();
     a.name = "Web project";
     a.color = "blue";
     a.addCategory (c);
     a.description = "Working on web project"
-    /*a.addTimeSlot(new TimeSlot(
+    a.addTimeSlot(new TimeSlot(
       new Date("2017-11-23T10:20:00"),
       new Date("2017-11-23T11:34:00")
     ));
@@ -66,8 +65,8 @@ export class StatsComponent implements OnInit {
     a.addTimeSlot(new TimeSlot(
       new Date("2017-12-08T15:30:00"),
       new Date("2017-12-08T17:30:00")
-    ));*/
-    this.acvitivies.push(a);
+    ));
+    this.activities.push(a);
     c = new Category();
     c.name = "relax";
     a = new Activity();
@@ -76,7 +75,7 @@ export class StatsComponent implements OnInit {
     a.addCategory(c);
     a.description = "Relaxing with good vibes";
     this.categories.push(c);
-    /*
+
     a.addTimeSlot(new TimeSlot(
       new Date("2017-11-23T12:00:00"),
       new Date("2017-11-23T14:00:00")
@@ -92,8 +91,9 @@ export class StatsComponent implements OnInit {
     a.addTimeSlot(new TimeSlot(
       new Date("2017-12-08T08:00:00"),
       new Date("2017-12-08T09:00:00")
-    ));*/
-    this.acvitivies.push(a);
+    ));
+
+    this.activities.push(a);
     c = new Category();
     c.name = "sport";
     a = new Activity();
@@ -101,19 +101,27 @@ export class StatsComponent implements OnInit {
     a.color = "blue";
     a.addCategory(c);
     a.description = "Playing with main gauche";
+    a.addTimeSlot(new TimeSlot(
+      new Date("2017-12-08T08:00:00"),
+      new Date("2017-12-08T09:00:00")
+    ));
     this.categories.push(c);
-    this.acvitivies.push(a);
-    console.log("HEY");
+    this.activities.push(a);
     for( let i = 0; i < 25; ++i) {
-      this.acvitivies.push(a);
+      this.activities.push(a);
     }
-    this.dataSource = new MatTableDataSource<Activity>(this.acvitivies);
+    this.dataSource = new MatTableDataSource<Activity>(this.activities);
 
     //
   }
 
-  calculTemps(activity:Activity): string {
-    return "Je dois calculer le time ICI ";
+  calculTemps(activity:Activity): number {
+    let elapsed_time : number  = 0;
+    let times_slots : TimeSlot[] = activity.getTimeSlots();
+    for(let i = 0; i< times_slots.length;++i) {
+      elapsed_time+= times_slots[i].elapsedTime();
+    }
+    return elapsed_time;
   }
 
   filterTable(value:string) {
@@ -122,4 +130,5 @@ export class StatsComponent implements OnInit {
     this.dataSource.filter = value;
   }
 
+  
 }
