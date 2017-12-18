@@ -9,7 +9,8 @@ import {
   MatSidenavModule,
   MatInputModule,
   MatSelectModule,
-  //MatDatepickerModule,
+  MatDatepickerModule,
+  MatNativeDateModule
   MatPaginatorModule,
   MatSortModule,
   MatTableModule
@@ -23,6 +24,8 @@ import {
     MatToolbarModule,
     MatListModule,
     MatSidenavModule,
+    MatDatepickerModule,
+    MatNativeDateModule
     MatSelectModule,
     MatInputModule
   ],
@@ -34,6 +37,8 @@ import {
     MatSidenavModule,
     MatSelectModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule
     MatPaginatorModule,
     MatSortModule,
     MatTableModule
