@@ -5,8 +5,29 @@
   <span>Statistics</span>
 </mat-toolbar>
 
-<!-- Total time -->
+<div class="select_interval_date">
+  <mat-form-field class="start_date">
+  <input matInput [matDatepicker]="start" placeholder="Choose a start date" disabled
+          (dateChange)="setDateStart($event)" [value]="dateStart">
+  <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+  <mat-datepicker touchUi="true" #start disabled="false"></mat-datepicker>
+</mat-form-field>
 
+  <mat-form-field class="end_date">
+    <input matInput [matDatepicker]="end" placeholder="Choose a end date" disabled
+            (dateChange)="setDateEnd($event)" [value]="dateEnd">
+    <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+    <mat-datepicker touchUi="true" #end disabled="false"></mat-datepicker>
+  </mat-form-field>
+</div>
+
+
+<!-- Total time -->
+<div class="total_time">
+  <span>Total elapsed time : {{calculDureeTotal()| date:'HH:mm:ss'}}</span>
+  <!--
+  -->
+</div>
 <!-- Pie chart of time by category -->
 
 
