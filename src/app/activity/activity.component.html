@@ -35,11 +35,11 @@
 
   <div class="button-raw">
     <!-- <button mat-raised-button color="accent" (click)="afficherActivity();compareCat();"> -->
-    <button mat-raised-button color="warn">
+    <button mat-raised-button color="warn" class="md-primary md-raised" (click)="openDialogSupprActivity()">
       <mat-icon aria-label="Delete">close</mat-icon>
       Delete
     </button>
-    <button mat-raised-button color="accent">
+    <button mat-raised-button color="accent" (click)="saveActivity()">
       <mat-icon aria-label="Save">check</mat-icon>
       Save
     </button>

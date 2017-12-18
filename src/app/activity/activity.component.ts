@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, Params, NavigationExtras } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Activity } from '../activity';
 import { Category } from '../category';
 import { AVAILABLE_COLORS } from '../global';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-activity',
@@ -20,7 +21,7 @@ export class ActivityComponent implements OnInit {
 
   public toppings: FormControl;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) {
     this.activity = new Activity();
     this.categories = CATEGORIES;
     this.colors = AVAILABLE_COLORS;
@@ -39,6 +40,21 @@ export class ActivityComponent implements OnInit {
     });
   }
 
+  openDialogSupprActivity(): void {
+    let dialogRef = this.dialog.open(ConfirmDeleteActivity, {
+      width: 'auto',
+      data: { name: this.activity.name }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  saveActivity(){
+    console.log("save Activity");
+  }
+
   // afficherActivity(){
   //   console.log(this.activity);
   // }
@@ -46,6 +62,25 @@ export class ActivityComponent implements OnInit {
   // compareCat(){
   //   console.log(this.activity.getCategories());
   // }
+}
+
+@Component({
+  selector: 'confirm-delete-activity',
+  templateUrl: 'confirm-delete-activity.html'
+})
+export class ConfirmDeleteActivity {
+
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmDeleteActivity>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  confirmDeleteActivity() {
+    console.log("supprActivity");
+  }
 }
 
 // Temporary elements for debug purposes until dataService is available
