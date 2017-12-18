@@ -1,9 +1,12 @@
 <!-- Activity add/edit/remove page  -->
 <mat-toolbar color="primary">
   <a mat-icon-button href="">
-    <mat-icon aria-label="Export">arrow_back</mat-icon>
+    <mat-icon aria-label="Export">close</mat-icon>
   </a>
-  <span>Activity</span>
+  <span *ngIf="!id">New activity</span>
+  <span *ngIf="id">Edit activity</span>
+  <span class="toolbar-divider"></span>
+  <button mat-button (click)="saveActivity()">SAVE</button>
 </mat-toolbar>
 
 <!-- <form [FormGroup]="myFormGroup"> -->
@@ -14,11 +17,12 @@
   </mat-form-field>
 
   <mat-form-field>
-    <textarea [(ngModel)]="activity.description" name="activity.description" matInput placeholder="Description"></textarea>
+    <textarea [(ngModel)]="activity.description" name="activity.description" matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6"></textarea>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Categories" [formControl]="toppings" [(ngModel)]="activity.categories" multiple> <!-- [formControl]="toppings" -->
+    <mat-select placeholder="Categories" [formControl]="toppings" [(ngModel)]="activity.categories" multiple>
+      <!-- [formControl]="toppings" -->
       <mat-option *ngFor="let cat of categories" [value]="cat">{{cat.name | titlecase}}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -27,21 +31,8 @@
     <mat-select placeholder="Color" [(value)]="activity.color">
       <mat-option></mat-option>
       <mat-option *ngFor="let color of colors" [value]="color">
-        <span [ngClass]="color" class="colorList"></span>
-        {{ color | titlecase}}
+        <span [ngClass]="color" class="colorList"></span> {{ color | titlecase}}
       </mat-option>
     </mat-select>
   </mat-form-field>
-
-  <div class="button-raw">
-    <!-- <button mat-raised-button color="accent" (click)="afficherActivity();compareCat();"> -->
-    <button mat-raised-button color="warn" class="md-primary md-raised" (click)="openDialogSupprActivity()">
-      <mat-icon aria-label="Delete">close</mat-icon>
-      Delete
-    </button>
-    <button mat-raised-button color="accent" (click)="saveActivity()">
-      <mat-icon aria-label="Save">check</mat-icon>
-      Save
-    </button>
-  </div>
 </form>

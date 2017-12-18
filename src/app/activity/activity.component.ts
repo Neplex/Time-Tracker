@@ -18,6 +18,7 @@ export class ActivityComponent implements OnInit {
   public activity: Activity;
   public categories: Category[];
   public colors: string[];
+  public id: string;
 
   public toppings: FormControl;
 
@@ -31,12 +32,12 @@ export class ActivityComponent implements OnInit {
   ngOnInit() {
     this.subscriptionParam = this.route.params.subscribe((param: any) => {
       // Search the activity by name
-        if((param['id'])!=null){ //Recuperer l'activité avec param['id'] quand la base de données sera ok
-          this.activity.name = "Activity 0";
-          this.activity.description = "description";
-          this.activity.color = "green";
-          this.activity.addCategory(CATEGORIES[0]);
-        }
+      if ((this.id = param['id']) != null) { //Recuperer l'activité avec param['id'] quand la base de données sera ok
+        this.activity.name = "Activity 0";
+        this.activity.description = "description";
+        this.activity.color = "green";
+        this.activity.addCategory(CATEGORIES[0]);
+      }
     });
   }
 
@@ -51,7 +52,7 @@ export class ActivityComponent implements OnInit {
     });
   }
 
-  saveActivity(){
+  saveActivity() {
     console.log("save Activity");
   }
 
