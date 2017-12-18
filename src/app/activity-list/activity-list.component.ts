@@ -19,7 +19,7 @@ export class ActivityListComponent implements OnInit {
   constructor() { /* NOTHING TO DO */ }
 
   ngOnInit() {
-    this.categories = CATEGORIES;
+    this.categories = [];
     this.setCategory(null);
 
     // Update the time spend on the active activity
@@ -33,12 +33,12 @@ export class ActivityListComponent implements OnInit {
   // Set the current category and update the activities list
   setCategory(category: Category): void {
     this.activities = [];
-    for (let i = 0; i < 10; i++) {
-      let act: Activity = new Activity();
-      act.name = act.description = "Activity " + i;
-      act.color = "blue";
-      this.activities.push(act);
-    }
+    // for (let i = 0; i < 10; i++) {
+    //   let act: Activity = new Activity();
+    //   act.name = act.description = "Activity " + i;
+    //   act.color = "blue";
+    //   this.activities.push(act);
+    // }
   }
 
   // Stop the active activity
