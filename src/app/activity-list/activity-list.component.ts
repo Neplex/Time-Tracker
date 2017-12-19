@@ -15,6 +15,7 @@ export class ActivityListComponent implements OnInit {
   public currentActivity: Activity = null;
   public time: Date;
   public app_name: string = APP_NAME;
+  public editMode: boolean = false;
 
   constructor() { /* NOTHING TO DO */ }
 
@@ -65,6 +66,10 @@ export class ActivityListComponent implements OnInit {
         this.currentActivity = null;
       }
     }
+  }
+
+  toogleEditMode() {
+    this.editMode = !this.editMode;
   }
 }
 

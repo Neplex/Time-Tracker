@@ -5,3 +5,33 @@
   </a>
   <span>Category</span>
 </mat-toolbar>
+
+<form>
+  <mat-form-field>
+    <input [(ngModel)]="category.name" name="category.name" matInput placeholder="Name">
+  </mat-form-field>
+  <div class="mat-typography">
+    <p>Choose icon:</p>
+    <div class="icons">
+
+      <input [(ngModel)]="category.icon" value="" type="radio" id="default" name="icon">
+      <label for="default" class="icon"><span id="spanDefault">EMPTY</span></label>
+      <ng-container *ngFor="let icon of icons">
+        <input [(ngModel)]="category.icon" value="{{icon}}" type="radio" id="{{icon}}" name="icon">
+        <label for="{{icon}}" class="icon"><mat-icon matListIcon>{{icon}}</mat-icon></label>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="button-raw">
+    <button mat-raised-button color="warn" class="md-primary md-raised">
+      <mat-icon aria-label="Delete">close</mat-icon>
+      Delete
+    </button>
+    <button mat-raised-button color="accent" (click)="saveCategory()">
+      <mat-icon aria-label="Save">check</mat-icon>
+      Save
+    </button>
+  </div>
+
+</form>

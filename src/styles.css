@@ -8,6 +8,10 @@ html, body {
   height: 100%;
 }
 
+.toolbar-divider {
+  flex: 1 1 auto;
+}
+
 #launchIcon {
   width: 50%;
   position: absolute;

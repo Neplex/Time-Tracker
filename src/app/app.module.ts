@@ -2,7 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
@@ -13,6 +13,7 @@ import { ActivityListComponent } from './activity-list/activity-list.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { StatsComponent } from './stats/stats.component';
 import { ActivityComponent } from './activity/activity.component';
+import { ConfirmDeleteActivity } from './activity/activity.component';
 import { CategoryComponent } from './category/category.component';
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
     AppComponent,
     ActivityListComponent,
     ActivityComponent,
+    ConfirmDeleteActivity,
     CalendarComponent,
     StatsComponent,
     CategoryComponent
@@ -39,11 +41,13 @@ const routes: Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
     AngularMaterialModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ConfirmDeleteActivity]
 })
 export class AppModule { }
