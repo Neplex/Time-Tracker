@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Category } from '../category';
 import { Subscription } from 'rxjs';
+import { DataStorageService } from '../data-storage/data-storage.service';
+import { Category } from '../category';
 import { AVAILABLE_ICONS } from '../global';
 
 @Component({
@@ -12,26 +13,30 @@ import { AVAILABLE_ICONS } from '../global';
 export class CategoryComponent implements OnInit {
 
   private subscriptionParam: Subscription;
+  private subscriptionDB: Subscription;
   public category: Category;
   public icons: string[];
+  public id: string;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private dataBase: DataStorageService) {
     this.category = new Category();
     this.icons = AVAILABLE_ICONS;
   }
 
   ngOnInit() {
     this.subscriptionParam = this.route.params.subscribe((param: any) => {
-      if((param['id'])!=null){
-        console.log("id Categorie found");
-        this.category.name = "Code";
-        this.category.icon = "code";
+      if ((this.id = param['id']) != null) { // Search the category by name
+        // GET CATEGORY
       }
     });
   }
 
-  saveCategory(){
-    console.log(this.category);
+  ngOnDestroy() {
+    this.subscriptionParam.unsubscribe();
+    this.subscriptionDB.unsubscribe();
   }
 
+  saveCategory() {
+    this.dataBase.saveCategory(this.category);
+  }
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { DataStorageService } from '../data-storage/data-storage.service';
 import { APP_NAME } from '../global';
 import { Activity } from '../activity';
 import { Category } from '../category';
-import { DataStorageService } from '../data-storage/data-storage.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-activity-list',
@@ -12,12 +12,13 @@ import { Subscription } from 'rxjs';
 })
 export class ActivityListComponent implements OnInit {
 
-  public categories: Category[];
-  public activities: Activity[];
+  public categories: Category[] = [];
+  public activities: Activity[] = [];
   public currentActivity: Activity = null;
   public time: Date;
   public app_name: string = APP_NAME;
   public editMode: boolean = false;
+  private subscription: Subscription;
 
   constructor(private dataBase: DataStorageService) { /* NOTHING TO DO */ }
 
@@ -32,23 +33,26 @@ export class ActivityListComponent implements OnInit {
       }
     }, 500);
 
-    // Récupération des activités de la BDD. Async, une liste vide sera affichée puis rempli une fois la requète terminée.
-    let actsSub = this.dataBase.getActivities().subscribe((acts) => {
-      this.activities = acts;
-    },null,() =>{
-      actsSub.unsubscribe();
-    });
+    this.subscription = this.dataBase.getCategories().subscribe(cats => {
+      this.categories = cats;
+    })
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   // Set the current category and update the activities list
   setCategory(category: Category): void {
-    this.activities = [];
-    // for (let i = 0; i < 10; i++) {
-    //   let act: Activity = new Activity();
-    //   act.name = act.description = "Activity " + i;
-    //   act.color = "blue";
-    //   this.activities.push(act);
-    // }
+    if (category == null) {
+      this.subscription = this.dataBase.getActivities().subscribe(acts => {
+        this.activities = acts;
+      })
+    } else {
+      this.subscription = this.dataBase.getActivitiesByCategory(category).subscribe(acts => {
+        this.activities = acts;
+      });
+    }
   }
 
   // Stop the active activity

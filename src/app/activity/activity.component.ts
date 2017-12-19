@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Router, ActivatedRoute, Params, NavigationExtras } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router, ActivatedRoute, Params, NavigationExtras } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { DataStorageService } from '../data-storage/data-storage.service';
+import { AVAILABLE_COLORS } from '../global';
 import { Activity } from '../activity';
 import { Category } from '../category';
-import { AVAILABLE_COLORS } from '../global';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-activity',
@@ -15,6 +15,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class ActivityComponent implements OnInit {
 
   private subscriptionParam: Subscription;
+  private subscriptionDB: Subscription;
   public activity: Activity;
   public categories: Category[];
   public colors: string[];
@@ -22,73 +23,33 @@ export class ActivityComponent implements OnInit {
 
   public toppings: FormControl;
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(private route: ActivatedRoute, private dataBase: DataStorageService) {
     this.activity = new Activity();
-    this.categories = CATEGORIES;
+    this.categories = [];
     this.colors = AVAILABLE_COLORS;
     this.toppings = new FormControl();
   }
 
   ngOnInit() {
+    this.subscriptionDB = this.dataBase.getCategories().subscribe(cats => {
+      this.categories = cats;
+    })
+
     this.subscriptionParam = this.route.params.subscribe((param: any) => {
-      // Search the activity by name
-      if ((this.id = param['id']) != null) { //Recuperer l'activité avec param['id'] quand la base de données sera ok
-        this.activity.name = "Activity 0";
-        this.activity.description = "description";
-        this.activity.color = "green";
-        this.activity.addCategory(CATEGORIES[0]);
+      if ((this.id = param['id']) != null) { // Search the activity by name
+        this.subscriptionDB = this.dataBase.getActivity(this.id).subscribe(acts => {
+          this.activity = acts;
+        })
       }
     });
   }
 
-  openDialogSupprActivity(): void {
-    let dialogRef = this.dialog.open(ConfirmDeleteActivity, {
-      width: 'auto',
-      data: { name: this.activity.name }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+  ngOnDestroy() {
+    this.subscriptionParam.unsubscribe();
+    this.subscriptionDB.unsubscribe();
   }
 
   saveActivity() {
-    console.log("save Activity");
-  }
-
-  // afficherActivity(){
-  //   console.log(this.activity);
-  // }
-  //
-  // compareCat(){
-  //   console.log(this.activity.getCategories());
-  // }
-}
-
-@Component({
-  selector: 'confirm-delete-activity',
-  templateUrl: 'confirm-delete-activity.html'
-})
-export class ConfirmDeleteActivity {
-
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmDeleteActivity>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
-
-  closeDialog(): void {
-    this.dialogRef.close();
-  }
-
-  confirmDeleteActivity() {
-    console.log("supprActivity");
+    this.dataBase.saveActivity(this.activity);
   }
 }
-
-// Temporary elements for debug purposes until dataService is available
-const CATEGORIES: Category[] = [
-  { "name": "Code", "icon": "code" },
-  { "name": "Sleep", "icon": "airline_seat_individual_suite" },
-  { "name": "Call", "icon": "call" },
-  { "name": "Games", "icon": "casino" },
-  { "name": "Movies", "icon": "movies" }
-]

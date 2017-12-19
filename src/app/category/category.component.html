@@ -1,9 +1,12 @@
 <!-- Category add/edit/remove page  -->
 <mat-toolbar color="primary">
   <a mat-icon-button href="">
-    <mat-icon aria-label="Export">arrow_back</mat-icon>
+    <mat-icon aria-label="Close">close</mat-icon>
   </a>
-  <span>Category</span>
+  <span *ngIf="!id">New category</span>
+  <span *ngIf="id">Edit category</span>
+  <span class="toolbar-divider"></span>
+  <button mat-button (click)="saveCategory()">SAVE</button>
 </mat-toolbar>
 
 <form>
@@ -22,16 +25,4 @@
       </ng-container>
     </div>
   </div>
-
-  <div class="button-raw">
-    <button mat-raised-button color="warn" class="md-primary md-raised">
-      <mat-icon aria-label="Delete">close</mat-icon>
-      Delete
-    </button>
-    <button mat-raised-button color="accent" (click)="saveCategory()">
-      <mat-icon aria-label="Save">check</mat-icon>
-      Save
-    </button>
-  </div>
-
 </form>

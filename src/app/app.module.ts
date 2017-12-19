@@ -14,7 +14,6 @@ import { ActivityListComponent } from './activity-list/activity-list.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { StatsComponent } from './stats/stats.component';
 import { ActivityComponent } from './activity/activity.component';
-import { ConfirmDeleteActivity } from './activity/activity.component';
 import { CategoryComponent } from './category/category.component';
 
 const routes: Routes = [
@@ -33,7 +32,6 @@ const routes: Routes = [
     AppComponent,
     ActivityListComponent,
     ActivityComponent,
-    ConfirmDeleteActivity,
     CalendarComponent,
     StatsComponent,
     CategoryComponent
@@ -49,7 +47,6 @@ const routes: Routes = [
     AngularMaterialModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  entryComponents: [ConfirmDeleteActivity]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
