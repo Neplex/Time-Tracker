@@ -30,7 +30,13 @@
 </div>
 <!-- Pie chart of time by category -->
 
-
+<div style="display: block">
+  <canvas baseChart
+              [data]="categoriesData"
+              [labels]="chartLabels"
+              [chartType]="chartType">
+            </canvas>
+</div>
 
 <!--
 List of activities

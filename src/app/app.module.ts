@@ -7,8 +7,6 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 
-//import {CdkTableModule} from '@angular/cdk/table';
-
 // Components
 import { AppComponent } from './app.component';
 import { ActivityListComponent } from './activity-list/activity-list.component';
@@ -16,6 +14,11 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { StatsComponent } from './stats/stats.component';
 import { ActivityComponent } from './activity/activity.component';
 import { CategoryComponent } from './category/category.component';
+
+
+//ng2-charts
+import { ChartsModule } from 'ng2-charts';
+
 
 const routes: Routes = [
   { path: 'activities', component: ActivityListComponent },
@@ -44,6 +47,7 @@ const routes: Routes = [
     HttpModule,
     RouterModule.forRoot(routes),
     AngularMaterialModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

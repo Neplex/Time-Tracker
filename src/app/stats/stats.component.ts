@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Activity } from '../activity';
+import { Component, OnInit, ViewChild, NgModule } from '@angular/core';
 import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
+
+import { Activity } from '../activity';
 import { Category } from '../category';
 import { TimeSlot } from '../time-slot';
+
 
 @Component({
   selector: 'app-stats',
@@ -30,10 +33,15 @@ export class StatsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
+  chartLabels:string[] = [];
+  categoriesData:number[] = [];
+  chartType:string = 'doughnut';
 
   constructor() { }
 
@@ -120,9 +128,9 @@ export class StatsComponent implements OnInit {
     this.allActivities.push(a);
     this.activitiesInInterval = this.allActivities;
     this.dataSource = new MatTableDataSource<Activity>(this.activitiesInInterval);
+    this.setDonuts();
   }
 
-  //calcul le temps pour chaque activity
   calculTemps(activity:Activity): number {
     let elapsed_time : number  = 0;
     let times_slots : TimeSlot[] = activity.getTimeSlots();
@@ -135,18 +143,13 @@ export class StatsComponent implements OnInit {
     return elapsed_time;
   }
 
-  //méthode de filtre pour la table
   filterTable(value:string) {
     value = value.trim();
     value = value.toLowerCase();
     this.dataSource.filter = value;
   }
 
-/*
-
-*/
-
-  upDate() {
+  update() {
     let activity: Activity = null;
     this.activitiesInInterval = [];
     for(let i=0; i < this.allActivities.length;++i) {
@@ -156,6 +159,7 @@ export class StatsComponent implements OnInit {
       }
     }
     this.dataSource = new MatTableDataSource<Activity>(this.activitiesInInterval);
+    this.setDonuts();
   }
 
   calculDureeTotal() : number {
@@ -171,7 +175,7 @@ export class StatsComponent implements OnInit {
     if(this.dateEnd == null || this.dateEnd < this.dateStart ) {
         this.dateEnd = this.dateStart;
     }
-    this.upDate();
+    this.update();
   }
 
   setDateEnd(event: MatDatepickerInputEvent<Date>) {
@@ -179,5 +183,33 @@ export class StatsComponent implements OnInit {
     if(this.dateStart == null || this.dateEnd < this.dateStart) {
         this.dateStart = this.dateEnd;
     }
-    this.upDate();
+    this.update();
   }
+
+  setDonuts() {
+    let val:number = null;
+    let curretCategory:string = null;
+    let activity : Activity = null;
+    this.chartLabels = [];
+    this.categoriesData = [];
+    let times_slot : TimeSlot[] = [];
+    for(let i = 0; i< this.categories.length;++i) {
+      curretCategory = this.categories[i].name;
+      val = 0;
+      for(let j = 0; j < this.activitiesInInterval.length;++j) {
+        activity = this.activitiesInInterval[i];
+        if(curretCategory in activity.getCategories()))  {
+          times_slot = activity.getTimeSlots();
+          for(let k = 0; k < times_slot.length; ++k) {
+            val += times_slot[k].elapsedTime();
+          }
+        }
+        console.log(val);
+      }
+      this.categoriesData.push(val);
+      this.chartLabels.push(curretCategory);
+    }
+    console.log(this.chartLabels);
+    console.log(this.categoriesData);
+  }
+}
