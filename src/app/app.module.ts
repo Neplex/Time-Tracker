@@ -25,6 +25,11 @@ import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
 import { ActivityListItemComponent } from './activity-list-item/activity-list-item.component';
 import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-confirm-dialog.component';
 
+
+//ng2-charts
+import { ChartsModule } from 'ng2-charts';
+
+
 const routes: Routes = [
   { path: 'activities', component: MainComponent },
   { path: 'activities/:id', component: ActivityComponent },
@@ -62,7 +67,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     AngularMaterialModule,
     AngularMaterialCalendarModule,
-    DataStorageModule
+    DataStorageModule,
+    ChartsModule
   ],
   entryComponents: [DeleteConfirmDialogComponent],
   providers: [],
