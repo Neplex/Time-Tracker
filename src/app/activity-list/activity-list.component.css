@@ -1,12 +1,12 @@
-.toolbar-divider {
-  flex: 1 1 auto;
-}
-
 #fab {
   display: block;
   position: fixed;
   right: 1em;
   bottom: 1em;
+}
+
+#emptyCard {
+  margin: .7em;
 }
 
 mat-sidenav-container, .container {
@@ -18,4 +18,20 @@ mat-sidenav-container, .container {
 
 mat-sidenav {
   width: 15em;
+}
+
+mat-list-item span {
+  width: 0 !important;
+  height: 0 !important;
+  padding: 15px !important;
+}
+
+*[chrono]>h1 {
+  text-align: center;
+  font-size: 3em;
+  flex: 1 1;
+}
+
+*[chrono]>h1>small {
+  font-size: .5em;
 }

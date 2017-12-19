@@ -2,11 +2,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { AngularMaterialCalendarModule } from './angular-material-calendar/angular-material-calendar.module';
+import { DataStorageModule } from './data-storage/data-storage.module';
 
 // Components
 import { AppComponent } from './app.component';
@@ -40,10 +41,12 @@ const routes: Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
     AngularMaterialModule,
-    AngularMaterialCalendarModule
+    AngularMaterialCalendarModule,
+    DataStorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

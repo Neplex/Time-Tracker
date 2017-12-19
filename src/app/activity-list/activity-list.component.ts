@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { DataStorageService } from '../data-storage/data-storage.service';
 import { APP_NAME } from '../global';
 import { Activity } from '../activity';
 import { Category } from '../category';
@@ -10,16 +12,18 @@ import { Category } from '../category';
 })
 export class ActivityListComponent implements OnInit {
 
-  public categories: Category[];
-  public activities: Activity[];
+  public categories: Category[] = [];
+  public activities: Activity[] = [];
   public currentActivity: Activity = null;
   public time: number;
   public app_name: string = APP_NAME;
+  public editMode: boolean = false;
+  private subscription: Subscription;
 
-  constructor() { /* NOTHING TO DO */ }
+  constructor(private dataBase: DataStorageService) { /* NOTHING TO DO */ }
 
   ngOnInit() {
-    this.categories = CATEGORIES;
+    this.categories = [];
     this.setCategory(null);
 
     // Update the time spend on the active activity
@@ -28,15 +32,26 @@ export class ActivityListComponent implements OnInit {
         this.time = this.currentActivity.getCurrentTime();
       }
     }, 500);
+
+    this.subscription = this.dataBase.getCategories().subscribe(cats => {
+      this.categories = cats;
+    })
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   // Set the current category and update the activities list
   setCategory(category: Category): void {
-    this.activities = [];
-    for (let i = 0; i < 10; i++) {
-      let act: Activity = new Activity();
-      act.name = act.description = "Activity " + i;
-      this.activities.push(act);
+    if (category == null) {
+      this.subscription = this.dataBase.getActivities().subscribe(acts => {
+        this.activities = acts;
+      })
+    } else {
+      this.subscription = this.dataBase.getActivitiesByCategory(category).subscribe(acts => {
+        this.activities = acts;
+      });
     }
   }
 
@@ -64,6 +79,10 @@ export class ActivityListComponent implements OnInit {
         this.currentActivity = null;
       }
     }
+  }
+
+  toogleEditMode() {
+    this.editMode = !this.editMode;
   }
 }
 

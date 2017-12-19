@@ -1,7 +1,28 @@
 <!-- Category add/edit/remove page  -->
 <mat-toolbar color="primary">
   <a mat-icon-button href="">
-    <mat-icon aria-label="Export">arrow_back</mat-icon>
+    <mat-icon aria-label="Close">close</mat-icon>
   </a>
-  <span>Category</span>
+  <span *ngIf="!id">New category</span>
+  <span *ngIf="id">Edit category</span>
+  <span class="toolbar-divider"></span>
+  <button mat-button (click)="saveCategory()">SAVE</button>
 </mat-toolbar>
+
+<form>
+  <mat-form-field>
+    <input [(ngModel)]="category.name" name="category.name" matInput placeholder="Name">
+  </mat-form-field>
+  <div class="mat-typography">
+    <p>Choose icon:</p>
+    <div class="icons">
+
+      <input [(ngModel)]="category.icon" value="" type="radio" id="default" name="icon">
+      <label for="default" class="icon"><span id="spanDefault">EMPTY</span></label>
+      <ng-container *ngFor="let icon of icons">
+        <input [(ngModel)]="category.icon" value="{{icon}}" type="radio" id="{{icon}}" name="icon">
+        <label for="{{icon}}" class="icon"><mat-icon matListIcon>{{icon}}</mat-icon></label>
+      </ng-container>
+    </div>
+  </div>
+</form>
