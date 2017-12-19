@@ -4,20 +4,15 @@ form {
   padding: 20px;
 }
 
-.button-raw{
+.button-raw {
   display: flex;
-}
-
-button{
-  flex: 1 1;
-  margin: 0.5em;
 }
 
 form>* {
   width: 100%;
 }
 
-.colorList{
+.colorList {
   display: inline-block;
   width: 1.5em;
   height: 1.5em;
@@ -26,6 +21,6 @@ form>* {
   margin-right: 0.5em;
 }
 
-mat-option{
-  vertical-align:middle;
+mat-option {
+  vertical-align: middle;
 }
