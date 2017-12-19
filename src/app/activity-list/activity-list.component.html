@@ -79,7 +79,7 @@
     </mat-toolbar>
 
     <!-- list -->
-    <mat-nav-list>
+    <mat-nav-list *ngIf="activities.length; else emptyCard">
       <mat-list-item *ngFor="let activity of activities">
         <span [ngClass]="activity.color" mat-list-icon></span>
         <h3 matLine>{{activity.name | titlecase}}</h3>
@@ -117,4 +117,18 @@
     </button>
     <span>Edit activities</span>
   </mat-toolbar>
+</ng-template>
+
+<ng-template #emptyCard>
+  <mat-card tabindex="0" id="emptyCard" color="accent">
+    <mat-card-title color="primary">It seems empty !</mat-card-title>
+    <mat-card-content>
+      To begin, you must add a new activity. Try pressing the button below.
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-button href="add/activity">
+        NEW ACTIVITY
+      </a>
+    </mat-card-actions>
+  </mat-card>
 </ng-template>

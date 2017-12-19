@@ -5,6 +5,10 @@
   bottom: 1em;
 }
 
+#emptyCard {
+  margin: .7em;
+}
+
 mat-sidenav-container, .container {
   padding: 0;
   margin: 0;
