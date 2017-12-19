@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { APP_NAME } from '../global';
 import { Activity } from '../activity';
 import { Category } from '../category';
+import { DataStorageService } from '../data-storage/data-storage.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-activity-list',
@@ -17,7 +19,7 @@ export class ActivityListComponent implements OnInit {
   public app_name: string = APP_NAME;
   public editMode: boolean = false;
 
-  constructor() { /* NOTHING TO DO */ }
+  constructor(private dataBase: DataStorageService) { /* NOTHING TO DO */ }
 
   ngOnInit() {
     this.categories = [];
@@ -29,6 +31,13 @@ export class ActivityListComponent implements OnInit {
         this.time = new Date(this.currentActivity.getCurrentTime());
       }
     }, 500);
+
+    // Récupération des activités de la BDD. Async, une liste vide sera affichée puis rempli une fois la requète terminée.
+    let actsSub = this.dataBase.getActivities().subscribe((acts) => {
+      this.activities = acts;
+    },null,() =>{
+      actsSub.unsubscribe();
+    });
   }
 
   // Set the current category and update the activities list

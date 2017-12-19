@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { DataStorageModule } from './data-storage/data-storage.module';
 
 // Components
 import { AppComponent } from './app.component';
@@ -44,6 +45,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
+    DataStorageModule,
     AngularMaterialModule
   ],
   providers: [],
