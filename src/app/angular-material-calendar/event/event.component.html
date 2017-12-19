@@ -1,0 +1,4 @@
+<mat-card [ngClass]="event.cssClass">
+  <mat-card-title>{{ event.name | titlecase }}</mat-card-title>
+  <mat-card-subtitle>{{ event.startDate | date:'HH:mm:ss' }} - {{ event.endDate | date:'HH:mm:ss' }}</mat-card-subtitle>
+</mat-card>

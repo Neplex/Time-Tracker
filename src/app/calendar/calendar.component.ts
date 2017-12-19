@@ -2,68 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Activity } from '../activity';
 import { TimeSlot } from '../time-slot';
-
-class CalendarEvent {
-  public name: string;
-  public color: string;
-  private timeSlot: TimeSlot;
-
-  constructor(activity: Activity, timeSlot: TimeSlot) {
-    this.name = activity.name;
-    this.color = activity.color;
-    this.timeSlot = timeSlot;
-  }
-
-  getDate(): Date {
-    return this.timeSlot.start;
-  }
-
-}
-
-class CalendarDay {
-  public date: Date;
-  public events: CalendarEvent[];
-
-  constructor(date: Date) {
-    this.date = date;
-    this.events = [];
-  }
-
-  addEvent(event: CalendarEvent): void {
-    this.events.push(event);
-    this.events.sort((e1, e2) => e1.getDate().valueOf() - e2.getDate().valueOf());
-  }
-}
-
-class CalendarMonth {
-  public date: Date;
-  public days: CalendarDay[];
-
-  constructor(date: Date) {
-    this.date = date;
-    this.days = [];
-  }
-
-  addEvent(event: CalendarEvent): void {
-    // Search day
-    let day: CalendarDay = this.days.find(
-      d => d.date.getDay() == event.getDate().getDay()
-    );
-
-    // If day not exist add new
-    if (day == null) {
-      day = new CalendarDay(event.getDate());
-      this.days.push(day);
-      this.days.sort((d1, d2) => d1.date.valueOf() - d2.date.valueOf());
-    }
-
-    // Add event to day
-    day.addEvent(event);
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// TODO: acceuil -> ajout rond couleur
+import { CalendarEvent } from '../angular-material-calendar/calendar-event';
 
 @Component({
   selector: 'app-calendar',
@@ -72,16 +11,10 @@ class CalendarMonth {
 })
 export class CalendarComponent implements OnInit {
 
-  public months: CalendarMonth[];
   public date: Date = new Date();
+  public events: CalendarEvent[] = [];
 
   constructor() { }
-
-  setDate(event: MatDatepickerInputEvent<Date>) {
-    let dayID = "" + event.value.getFullYear() + (event.value.getMonth() + 1) + event.value.getDate();
-    // TODO: not working --'
-    document.getElementById(dayID).scrollIntoView();
-  }
 
   ngOnInit() {
 
@@ -140,31 +73,12 @@ export class CalendarComponent implements OnInit {
 
 
     let activites: Activity[] = ACTIVITIES;
-    this.months = [];
-
-    // For all time slots in all activity
-    for (let i = 0; i < activites.length; i++) {
-      let activity = activites[i];
-
-      for (let j = 0; j < activity.getTimeSlots().length; j++) {
-        let event = new CalendarEvent(activity, activity.getTimeSlots()[j]);
-
-        // If the month/day exist, append event, else add it
-        let month: CalendarMonth = this.months.find(
-          m => m.date.getMonth() == event.getDate().getMonth()
-        );
-
-        // If day not exist add new
-        if (month == null) {
-          month = new CalendarMonth(event.getDate());
-          this.months.push(month);
-          this.months.sort((m1, m2) => m1.date.valueOf() - m2.date.valueOf());
-        }
-
-        // Add event to day
-        month.addEvent(event);
-      }
-    }
+    activites.forEach(a => {
+      a.getTimeSlots().forEach(ts => {
+        let event = new CalendarEvent(a.name, ts.start, ts.end, a.color);
+        this.events.push(event);
+      });
+    });
   }
 
 }

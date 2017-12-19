@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { AngularMaterialCalendarModule } from './angular-material-calendar/angular-material-calendar.module';
 
 // Components
 import { AppComponent } from './app.component';
@@ -41,7 +42,8 @@ const routes: Routes = [
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
-    AngularMaterialModule
+    AngularMaterialModule,
+    AngularMaterialCalendarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
