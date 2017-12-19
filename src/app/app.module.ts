@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { AngularMaterialCalendarModule } from './angular-material-calendar/angular-material-calendar.module';
 import { DataStorageModule } from './data-storage/data-storage.module';
 
 // Components
@@ -43,8 +44,9 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
-    DataStorageModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    AngularMaterialCalendarModule,
+    DataStorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

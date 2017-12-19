@@ -28,8 +28,7 @@ export class Activity {
 
   // Get time spend on activity durring the current time slot
   getCurrentTime(): number {
-    // TODO: -3600000 is because of GMT, remove it
-    return this.start_date != null ? Date.now() - this.start_date.getTime() - 3600000 : 0;
+    return this.start_date != null ? new TimeSlot(this.start_date, new Date()).elapsedTime() : 0;
   }
 
   // Start a new time slot

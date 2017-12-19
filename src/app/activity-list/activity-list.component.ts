@@ -15,7 +15,7 @@ export class ActivityListComponent implements OnInit {
   public categories: Category[] = [];
   public activities: Activity[] = [];
   public currentActivity: Activity = null;
-  public time: Date;
+  public time: number;
   public app_name: string = APP_NAME;
   public editMode: boolean = false;
   private subscription: Subscription;
@@ -29,7 +29,7 @@ export class ActivityListComponent implements OnInit {
     // Update the time spend on the active activity
     setInterval(() => {
       if (this.currentActivity != null) {
-        this.time = new Date(this.currentActivity.getCurrentTime());
+        this.time = this.currentActivity.getCurrentTime();
       }
     }, 500);
 
