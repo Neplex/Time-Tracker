@@ -12,6 +12,12 @@ form>* {
   width: 100%;
 }
 
+.categoryList{
+  vertical-align: middle;
+  margin-left: .2em;
+  margin-right: .2em;
+}
+
 .colorList {
   display: inline-block;
   width: 1.5em;

@@ -23,7 +23,10 @@
   <mat-form-field>
     <mat-select placeholder="Categories" [formControl]="toppings" [(ngModel)]="activity.categories" multiple>
       <!-- [formControl]="toppings" -->
-      <mat-option *ngFor="let cat of categories" [value]="cat">{{cat.name | titlecase}}</mat-option>
+      <mat-option *ngFor="let cat of categories" [value]="cat">
+        <mat-icon matListIcon class="categoryList">{{cat.icon}}</mat-icon>
+        {{cat.name | titlecase}}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
