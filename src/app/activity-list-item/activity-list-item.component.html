@@ -9,7 +9,7 @@
   <a mat-icon-button href="activities/{{activity.name}}" *ngIf="editMode">
     <mat-icon>edit</mat-icon>
   </a>
-  <button mat-icon-button *ngIf="editMode">
+  <button mat-icon-button (click)="confirmDelete()" *ngIf="editMode">
     <mat-icon>delete</mat-icon>
   </button>
 </mat-list-item>

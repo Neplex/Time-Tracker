@@ -23,6 +23,7 @@ import { DrawerComponent } from './drawer/drawer.component';
 import { MainComponent } from './main/main.component';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
 import { ActivityListItemComponent } from './activity-list-item/activity-list-item.component';
+import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-confirm-dialog.component';
 
 const routes: Routes = [
   { path: 'activities', component: MainComponent },
@@ -49,7 +50,8 @@ const routes: Routes = [
     DrawerComponent,
     MainComponent,
     MainToolbarComponent,
-    ActivityListItemComponent
+    ActivityListItemComponent,
+    DeleteConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +64,7 @@ const routes: Routes = [
     AngularMaterialCalendarModule,
     DataStorageModule
   ],
+  entryComponents: [DeleteConfirmDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
