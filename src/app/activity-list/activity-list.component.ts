@@ -47,7 +47,7 @@ export class ActivityListComponent implements OnInit {
     if (category == null) {
       this.subscription = this.dataBase.getActivities().subscribe(acts => {
         this.activities = acts;
-      })
+      });
     } else {
       this.subscription = this.dataBase.getActivitiesByCategory(category).subscribe(acts => {
         this.activities = acts;
