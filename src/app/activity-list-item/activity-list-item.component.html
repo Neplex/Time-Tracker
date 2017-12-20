@@ -1,0 +1,15 @@
+<mat-list-item>
+  <span class="color" [ngClass]="activity.color" mat-list-icon></span>
+  <h3 matLine>{{activity.name | titlecase}}</h3>
+  <p matLine>{{activity.description | lowercase}}</p>
+
+  <button mat-icon-button (click)="toogleActivity()" *ngIf="!editMode">
+    <mat-icon>access_time</mat-icon>
+  </button>
+  <a mat-icon-button href="activities/{{activity.name}}" *ngIf="editMode">
+    <mat-icon>edit</mat-icon>
+  </a>
+  <button mat-icon-button *ngIf="editMode">
+    <mat-icon>delete</mat-icon>
+  </button>
+</mat-list-item>

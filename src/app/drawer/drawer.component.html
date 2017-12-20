@@ -1,0 +1,28 @@
+<mat-nav-list>
+  <mat-list-item (click)="setCategory(null); sidenav.close()">
+    <mat-icon matListIcon>list</mat-icon>
+    <h3 matLine>All</h3>
+  </mat-list-item>
+  <a mat-list-item href="add/category">
+    <mat-icon matListIcon>add</mat-icon>
+    <h3 matLine>New category</h3>
+  </a>
+
+  <!-- categories -->
+  <app-categorie-list (onCategorySelect)="setCategory($event)"></app-categorie-list>
+
+  <mat-divider></mat-divider>
+  <h3 matSubheader>Menu</h3>
+  <a mat-list-item href="calendar">
+    <mat-icon matListIcon>event</mat-icon>
+    <h3 matLine>Calendar</h3>
+  </a>
+  <a mat-list-item href="stats">
+    <mat-icon matListIcon>pie_chart</mat-icon>
+    <h3 matLine>Stats</h3>
+  </a>
+  <a mat-list-item href="">
+    <mat-icon matListIcon>import_export</mat-icon>
+    <h3 matLine>Import / Export</h3>
+  </a>
+</mat-nav-list>

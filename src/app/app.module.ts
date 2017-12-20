@@ -16,9 +16,16 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { StatsComponent } from './stats/stats.component';
 import { ActivityComponent } from './activity/activity.component';
 import { CategoryComponent } from './category/category.component';
+import { ChronoComponent } from './chrono/chrono.component';
+import { CategorieListItemComponent } from './categorie-list-item/categorie-list-item.component';
+import { CategorieListComponent } from './categorie-list/categorie-list.component';
+import { DrawerComponent } from './drawer/drawer.component';
+import { MainComponent } from './main/main.component';
+import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
+import { ActivityListItemComponent } from './activity-list-item/activity-list-item.component';
 
 const routes: Routes = [
-  { path: 'activities', component: ActivityListComponent },
+  { path: 'activities', component: MainComponent },
   { path: 'activities/:id', component: ActivityComponent },
   { path: 'categories/:id', component: CategoryComponent },
   { path: 'add/activity', component: ActivityComponent },
@@ -35,7 +42,14 @@ const routes: Routes = [
     ActivityComponent,
     CalendarComponent,
     StatsComponent,
-    CategoryComponent
+    CategoryComponent,
+    ChronoComponent,
+    CategorieListItemComponent,
+    CategorieListComponent,
+    DrawerComponent,
+    MainComponent,
+    MainToolbarComponent,
+    ActivityListItemComponent
   ],
   imports: [
     BrowserModule,
