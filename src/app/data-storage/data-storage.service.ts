@@ -58,7 +58,7 @@ export class DataStorageService {
   }
 
   private getAll(storeName: string){
-      let transac: IDBTransaction = this.dataBase.transaction(storeName, 'readonly');
+      let transac: IDBTransaction = this.dataBase.transaction(storeName, 'readwrite');
       let store: IDBObjectStore = transac.objectStore(storeName);
 
       return new Observable((observer: Observer<any>) => {
@@ -315,7 +315,7 @@ export class DataStorageService {
   }
 
   deleteOne(id: string, storeName:string){
-    let transac: IDBTransaction = this.dataBase.transaction(storeName, 'readonly');
+    let transac: IDBTransaction = this.dataBase.transaction(storeName, 'readwrite');
     let store: IDBObjectStore = transac.objectStore(storeName);
 
     return new Observable((observer: Observer<any>) => {
