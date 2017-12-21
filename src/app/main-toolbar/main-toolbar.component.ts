@@ -66,12 +66,12 @@ export class MainToolbarComponent implements OnInit {
     this.menu.emit();
   }
 
-  toogleEditMode() {
+  toggleEditMode() {
     this.editMode = !this.editMode;
     this.mode = this.editMode ? 'edit' : null;
   }
 
-  toogleSearchMode() {
+  toggleSearchMode() {
     this.searchMode = !this.searchMode;
     this.mode = this.searchMode ? 'search' : null;
   }

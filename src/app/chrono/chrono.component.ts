@@ -13,7 +13,7 @@ export class ChronoComponent implements OnInit {
   @Input()
   set activity(act: Activity) {
     this._activity = act;
-    this.toogleActivity(this._activity);
+    this.toggleActivity(this._activity);
     this.activityChange.emit(this._activity);
   }
   get activity(): Activity {
@@ -52,7 +52,7 @@ export class ChronoComponent implements OnInit {
   }
 
   // Toogle an activity, stop the previous if it running
-  toogleActivity(act: Activity) {
+  toggleActivity(act: Activity) {
     if (act != null) {
       if (this.currentActivity == null) {
         this.setCurrentActivity(act);

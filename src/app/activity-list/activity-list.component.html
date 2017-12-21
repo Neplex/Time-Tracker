@@ -1,5 +1,5 @@
 <mat-nav-list *ngIf="activities.length; else emptyCard">
-  <app-activity-list-item [editMode]="editMode" [activity]="act" (toogleActivity)="toogleActivity(act)" *ngFor="let act of activities"></app-activity-list-item>
+  <app-activity-list-item [editMode]="editMode" [activity]="act" (onActivitySelect)="toggleActivity(act)" (onActivityDelete)="refresh()" *ngFor="let act of activities"></app-activity-list-item>
 </mat-nav-list>
 
 <!-- Template -->

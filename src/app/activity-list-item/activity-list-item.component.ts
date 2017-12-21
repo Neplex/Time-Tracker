@@ -13,14 +13,15 @@ export class ActivityListItemComponent implements OnInit {
 
   @Input() activity: Activity;
   @Input() editMode: boolean;
-  @Output('toogleActivity') onActivitySelect = new EventEmitter<void>();
+  @Output() onActivitySelect = new EventEmitter<void>();
+  @Output() onActivityDelete = new EventEmitter<void>();
 
   constructor(public dialog: MatDialog, private dataBase: DataStorageService) { }
 
   ngOnInit() {
   }
 
-  toogleActivity() {
+  toggleActivity() {
     this.onActivitySelect.emit();
   }
 
@@ -30,6 +31,7 @@ export class ActivityListItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataBase.deleteActivity(this.activity);
+        this.onActivityDelete.emit();
       }
     });
   }
