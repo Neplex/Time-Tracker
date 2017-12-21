@@ -11,6 +11,8 @@ import { AbstractControl } from '@angular/forms';
 
 let nameFound: boolean = false;
 
+let okToSave: boolean = false;
+
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -20,20 +22,23 @@ export class ActivityComponent implements OnInit {
 
   private subscriptionParam: Subscription;
   private subscriptionDB: Subscription;
+  private subscription: Subscription;
   public activity: Activity;
-  public categories: Category[];
+  public activities: Activity[];
+  public categories: string[];
   public colors: string[];
   public id: string;
 
-  public toppings: FormControl;
+  public categoriesControl: FormControl;
 
   private nameFormControl: FormControl;
 
   constructor(private route: ActivatedRoute, private dataBase: DataStorageService) {
     this.activity = new Activity();
+    this.activities = [];
     this.categories = [];
     this.colors = AVAILABLE_COLORS;
-    this.toppings = new FormControl();
+    this.categoriesControl = new FormControl();
     this.nameFormControl = new FormControl('', [
       Validators.required,
       this.existNameValidator
@@ -49,7 +54,13 @@ export class ActivityComponent implements OnInit {
 
   ngOnInit() {
     this.subscriptionDB = this.dataBase.getCategories().subscribe(cats => {
-      this.categories = cats;
+      for(let i=0; i<cats.length; i++){
+        this.categories.push(cats[i].name);
+      }
+    });
+
+    this.subscription = this.dataBase.getActivities().subscribe(acts => {
+      this.activities = acts;
     });
 
     this.subscriptionParam = this.route.params.subscribe((param: any) => {
@@ -64,63 +75,59 @@ export class ActivityComponent implements OnInit {
   ngOnDestroy() {
     this.subscriptionParam.unsubscribe();
     this.subscriptionDB.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   saveActivity() {
-    if (this.id != null) {
-      //this.dataBase.deleteActivity(this.activity);
+    if(okToSave){
+      this.activity.name = (((this.activity.name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
+      if (this.id != null) {
+        this.dataBase.deleteActivity(this.activity);
+      }
+      this.dataBase.saveActivity(this.activity);
+      window.location.replace("activities");
     }
-    this.dataBase.saveActivity(this.activity);
-    window.location.replace("activities");
   }
 
   verifyNameActivity(nameAct){
+
     nameFound=false;
+    okToSave=false;
     //replace(/[\s]{2,}/g," ") => supprime les doubles espaces ou plus
     let actInput = (((this.activity.name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
-    console.log(actInput);
     let actPram = "";
     if (this.id != null) {
       actPram = (((this.id).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
       actPram.replace(/[\s]{2,}/g," ");
-      console.log(actPram);
     }
-    // il faut que les activités enregistrés soient en minuscules
-    this.dataBase.getActivity(actInput).subscribe(act => {
-      var activityFound = null;
-      if(act == null){
-        console.log("act null");
+
+    let newAct=true;
+    for(var i=0; i<(this.activities).length; i++){
+      let actCompare = (((this.activities[i].name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
+      if(actCompare == actInput){
+        newAct=false;
       }
-      else {
+    }
+
+    if(newAct){
+      this.nameFormControl = new FormControl(this.activity.name, [Validators.required, this.existNameValidator]);
+      okToSave=true;
+    }
+    else{
+      this.dataBase.getActivity(actInput).subscribe(act => {
+        var activityFound = null;
         if(actInput != ""){
-          if(actInput == actPram){ // ok to edit the same activity
-            console.log("same activity");
-            activityFound = (this.activity.name).toLowerCase();
-            // this.saveActivity();
+          this.nameFormControl = new FormControl(this.activity.name, [Validators.required, this.existNameValidator]);
+          activityFound = (this.activity.name).toLowerCase();
+          if(actInput == actPram){
+            okToSave = true;
           }
           else{
-            activityFound = (this.activity.name).toLowerCase();
-            console.log("activityFound "+activityFound);
             nameFound=true;
-            console.log("activity already exist");
-            console.log(this.activity.name);
-
-            this.nameFormControl = new FormControl(this.activity.name, [
-              Validators.required,
-              this.existNameValidator
-            ]);
-          }
-          // a partir d'ici, c est normal que ca marche pas, pour l'instant
-          // save new activity
-          if(activityFound == null){
-            // Activity 10
-            // pas mis en jour tout de suite a revoir
-            console.log("activity not exist");
-            // this.saveActivity();
           }
         }
-      }
-    });
+      });
+    }
 
   }
 

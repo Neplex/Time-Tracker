@@ -6,7 +6,7 @@
   <span *ngIf="!id">New activity</span>
   <span *ngIf="id">Edit activity</span>
   <span class="toolbar-divider"></span>
-  <button mat-button (click)="verifyNameActivity($event.target.value)">SAVE</button>
+  <button mat-button (click)="saveActivity()">SAVE</button>
 </mat-toolbar>
 
 <form>
@@ -21,17 +21,17 @@
   </mat-form-field>
 
   <mat-form-field>
-    <textarea [(ngModel)]="activity.description" name="activity.description" matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6"></textarea>
+    <textarea [(ngModel)]="activity.description" name="activity.description" matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6" (input)=verifyNameActivity($event.target.value)></textarea>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Categories" [formControl]="toppings" [(ngModel)]="activity.categories" multiple>
+    <mat-select placeholder="Categories" [formControl]="categoriesControl" [(ngModel)]="activity.categories" multiple (click)=verifyNameActivity($event.target.value)>
       <mat-option *ngFor="let cat of categories" [value]="cat">{{cat.name | titlecase}}</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Color" [(value)]="activity.color">
+    <mat-select placeholder="Color" [(value)]="activity.color" (click)=verifyNameActivity($event.target.value)>
       <mat-option></mat-option>
       <mat-option *ngFor="let color of colors" [value]="color">
         <span [ngClass]="color" class="colorList"></span> {{ color | titlecase}}
