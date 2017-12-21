@@ -1,9 +1,11 @@
 <!-- Chrono -->
-<h1>{{time | date:'HH:mm'}}<small>{{time | date:'ss'}}</small></h1>
+<div chrono>
+  <h1>{{time | date:'HH:mm'}}<small>{{time | date:'ss'}}</small></h1>
+</div>
 
 <!-- Controls -->
-<div>
-  {{currentActivity.name | titlecase}} <span class="toolbar-divider"></span>
+<div actions>
+  <p>{{currentActivity.name | titlecase}}</p>
   <button mat-icon-button class="toto" (click)="stopActivity()">
     <mat-icon>done</mat-icon>
   </button>

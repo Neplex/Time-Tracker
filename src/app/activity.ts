@@ -42,8 +42,11 @@ export class Activity {
   stop(): TimeSlot {
     let ts: TimeSlot = null;
     if (this.start_date) {
-      ts = new TimeSlot(this.start_date, new Date());
-      this.addTimeSlot(ts);
+      let d = new Date(this.getCurrentTime());
+      if (d.getHours() ||  d.getMinutes()) {
+        ts = new TimeSlot(this.start_date, new Date());
+        this.addTimeSlot(ts);
+      }
       this.start_date = null;
     }
     return ts;

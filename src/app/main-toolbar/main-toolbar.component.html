@@ -37,7 +37,7 @@
     </mat-toolbar-row>
 
     <!-- chrono -->
-    <mat-toolbar-row *ngIf="activity">
+    <mat-toolbar-row id="chrono" *ngIf="activity">
       <app-chrono [(activity)]="activity"></app-chrono>
     </mat-toolbar-row>
   </mat-toolbar>

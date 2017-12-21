@@ -1,9 +1,25 @@
+[chrono] {
+  display: flex;
+}
+
 h1 {
-  text-align: center;
   font-size: 3em;
-  flex: 1 1;
+  margin: auto;
+  padding: .2em;
 }
 
 h1>small {
   font-size: .5em;
+}
+
+[actions] {
+  display: flex;
+  flex-direction: row;
+}
+
+p {
+  display: inline;
+  flex: 1 1;
+  margin: 0;
+  padding: 0;
 }

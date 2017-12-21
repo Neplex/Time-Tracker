@@ -1,8 +1,30 @@
 mat-card {
   margin: .5em;
   padding: 1em;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "name time" "date time";
+  grid-row-gap: 1em;
+}
+
+mat-card-title, mat-card-content {
+  margin: 0;
+  padding: 0;
 }
 
 mat-card mat-card-title {
   font-size: 1.5em;
+  grid-area: name;
+}
+
+mat-card mat-card-content {
+  grid-area: date;
+}
+
+mat-card span {
+  font-size: 2em;
+  grid-area: time;
+  text-align: right;
+  margin: auto !important;
 }

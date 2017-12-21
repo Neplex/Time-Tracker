@@ -31,15 +31,16 @@ export class ActivityListComponent implements OnInit {
     return this._category;
   }
   @Input() set filter(filter: string) {
+    if (filter) { filter = filter.toLowerCase(); }
     this.activities = this._actlist.filter(a => {
-      return a.name.includes(filter) || a.description.includes(filter);
+      return a.name.toLowerCase().includes(filter) || a.description.toLowerCase().includes(filter);
     });
   };
   @Output() onActivitySelect = new EventEmitter<Activity>();
 
   public activities: Activity[] = [];
   private subscription: Subscription;
-  private _actlist: Activity[] = [];  
+  private _actlist: Activity[] = [];
   private _category: Category;
 
   constructor(private dataBase: DataStorageService) { /* NOTHING TO DO */ }
@@ -56,7 +57,7 @@ export class ActivityListComponent implements OnInit {
     this.onActivitySelect.emit(act);
   }
 
-  refresh(): void{
+  refresh(): void {
     this.category = this.category;
   }
 

@@ -11,7 +11,7 @@ export class Calendar {
   addEvent(event: CalendarEvent): void {
     // Search month
     let month: CalendarMonth = this.months.find(
-      m => m.date.getDay() == event.startDate.getDay()
+      m => m.date.getMonth() == event.startDate.getMonth()
     );
 
     // If month not exist add new

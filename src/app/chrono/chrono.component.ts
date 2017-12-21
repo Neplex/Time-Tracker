@@ -20,7 +20,7 @@ export class ChronoComponent implements OnInit {
     return this._activity;
   }
 
-  public time: number;
+  public time: number = new Date().getTimezoneOffset() * 60000;
   public currentActivity: Activity = null;
   private _activity: Activity = null;
 
