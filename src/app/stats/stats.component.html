@@ -24,7 +24,7 @@
 
 <!-- Total time -->
 <div class="total_time">
-  <span>Total elapsed time : {{calculDureeTotal()| date:'HH:mm:ss'}}</span>
+  <span>Total elapsed time : {{calculTotalTime() | date:'HH:mm:ss'}}</span>
   <!--
   -->
 </div>
@@ -32,10 +32,13 @@
 
 <div style="display: block">
   <canvas baseChart
-              [data]="categoriesData"
-              [labels]="chartLabels"
-              [chartType]="chartType">
-            </canvas>
+      [data]="categoriesData"
+      [labels]="chartLabels"
+      [chartType]="chartType"
+      (chartClick)="chartClick($event)"
+      [options] = "chartOptions"
+      >
+  </canvas>
 </div>
 
 <!--
@@ -64,7 +67,7 @@ Angular material table: (https://material.angular.io/components/table/overview)
     <!-- Elapsed Time Column -->
     <ng-container matColumnDef="time">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Elapsed time </mat-header-cell>
-      <mat-cell *matCellDef="let activity"> {{calculTemps(activity) | date:'HH:mm:ss'}} </mat-cell>
+      <mat-cell *matCellDef="let activity"> {{getTempsActivity(activity) | date:'HH:mm:ss'}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedCols"></mat-header-row>

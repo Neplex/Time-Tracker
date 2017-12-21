@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild, NgModule } from '@angular/core';
+import { Component, OnInit, ViewChild, NgModule} from '@angular/core';
+import { DatePipe } from '@angular/common';
+
 import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
@@ -12,26 +14,27 @@ import { TimeSlot } from '../time-slot';
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.css']
 })
+
 export class StatsComponent implements OnInit {
-  /*Prepare table*/
-  dateStart :Date = null;
-  dateEnd :Date = null;
 
-  dureeTotal : number= 0;
+  dateStart :Date = null; //start Date
+  dateEnd :Date = null; //end Date
 
-  pageSize = 10;
-  pagePaginator = [5,10,20];
-  displayedCols = ["name","time"];
+  totalTime : number= 0; //total time spent in millisecondes
 
-
-  categories: Category[] = [];
-  activitiesInInterval: Activity[] = [];
-  allActivities: Activity[] = [];
+  pageSize = 10; //number activities per page
+  pagePaginator = [5,10,20]; //paginator sizes
+  displayedCols = ["name","time"]; //displayed column names
 
 
-  dataSource:MatTableDataSource<Activity> = null;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  categories: Category[] = []; //categories
+  activitiesInInterval: Activity[] = []; //activities that must be shown in the page
+  allActivities: Activity[] = []; //all activities
+
+
+  dataSource:MatTableDataSource<Activity> = null; //datasource for the page
+  @ViewChild(MatPaginator) paginator: MatPaginator; //paginator
+  @ViewChild(MatSort) sort: MatSort; // displaying
 
 
   ngAfterViewInit() {
@@ -39,9 +42,28 @@ export class StatsComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  chartLabels:string[] = [];
-  categoriesData:number[] = [];
-  chartType:string = 'doughnut';
+  chartLabels:string[] = []; //labels for the donuts charts (the categories name)
+  categoriesData:number[] = []; // list of the total time spend for each categoris
+  chartType:string = 'doughnut'; //the chart type
+  chartOptions : any = {
+    legend : {
+      position : "right",
+    },
+    tooltips : {
+      custom: function(data:any) {
+        if(data.body) {
+          console.log(data);
+          data.width = 150; //tooltip length
+          let text:string = data.body[0].lines[0];
+          let textSplit: string[] = text.split(" ");
+          let time :number = +textSplit[1];
+          let datePipe = new DatePipe("en-US");
+          let affiche = datePipe.transform(new Date(time), "HH:mm:ss");
+          data.body[0].lines[0] = "Durée total : "+affiche;
+        }
+      },
+    }
+  };
 
   constructor() { }
 
@@ -131,30 +153,25 @@ export class StatsComponent implements OnInit {
     this.setDonuts();
   }
 
-  calculTemps(activity:Activity): number {
-    let elapsed_time : number  = 0;
-    let times_slots : TimeSlot[] = activity.getTimeSlots();
-    for(let i = 0; i< times_slots.length;++i) {
-      if(this.dateStart == null || (this.dateStart.getTime() <= times_slots[i].start.getTime() && times_slots[i].start.getTime() <= this.dateEnd.getTime() )) {
-        elapsed_time+= times_slots[i].elapsedTime();
-      }
-        //gérer ici cas où la date de fin de l'activité est supérieur à la date de fin choisi
-    }
-    return elapsed_time;
+  //return time for an activity
+  getTempsActivity(activity:Activity): number {
+    return activity.getTotalTime(this.dateStart,this.dateEnd);
   }
 
+  //to filter the activities in the table
   filterTable(value:string) {
     value = value.trim();
     value = value.toLowerCase();
     this.dataSource.filter = value;
   }
 
+  //update the chart and the display of activities
   update() {
     let activity: Activity = null;
     this.activitiesInInterval = [];
     for(let i=0; i < this.allActivities.length;++i) {
       activity = this.allActivities[i];
-      if(this.calculTemps(activity) > 0) {
+      if(this.getTempsActivity(activity) > 0) {
         this.activitiesInInterval.push(activity);
       }
     }
@@ -162,14 +179,16 @@ export class StatsComponent implements OnInit {
     this.setDonuts();
   }
 
-  calculDureeTotal() : number {
-    this.dureeTotal = 0;
+  //get the total Time
+  calculTotalTime() : number {
+    this.totalTime = 0;
     for(let i = 0; i < this.activitiesInInterval.length;++i) {
-      this.dureeTotal += this.calculTemps(this.activitiesInInterval[i]);
+      this.totalTime += this.activitiesInInterval[i].getTotalTime(this.dateStart,this.dateEnd);
     }
-    return this.dureeTotal;
+    return this.totalTime;
   }
 
+//set the start date
   setDateStart(event: MatDatepickerInputEvent<Date>) {
     this.dateStart = event.value;
     if(this.dateEnd == null || this.dateEnd < this.dateStart ) {
@@ -178,6 +197,7 @@ export class StatsComponent implements OnInit {
     this.update();
   }
 
+//set the end date
   setDateEnd(event: MatDatepickerInputEvent<Date>) {
     this.dateEnd = event.value;
     if(this.dateStart == null || this.dateEnd < this.dateStart) {
@@ -186,30 +206,32 @@ export class StatsComponent implements OnInit {
     this.update();
   }
 
+
+  //set the charts datas
   setDonuts() {
     let val:number = null;
-    let curretCategory:string = null;
+    let curretCategory:Category = null;
     let activity : Activity = null;
     this.chartLabels = [];
     this.categoriesData = [];
     let times_slot : TimeSlot[] = [];
     for(let i = 0; i< this.categories.length;++i) {
-      curretCategory = this.categories[i].name;
+      curretCategory = this.categories[i];
       val = 0;
       for(let j = 0; j < this.activitiesInInterval.length;++j) {
-        activity = this.activitiesInInterval[i];
-        if(curretCategory in activity.getCategories()))  {
-          times_slot = activity.getTimeSlots();
-          for(let k = 0; k < times_slot.length; ++k) {
-            val += times_slot[k].elapsedTime();
-          }
+        activity = this.activitiesInInterval[j];
+        if(activity.hasCategory(curretCategory.name))  {
+          val += activity.getTotalTime(this.dateStart, this.dateEnd);
         }
-        console.log(val);
       }
       this.categoriesData.push(val);
-      this.chartLabels.push(curretCategory);
+      this.chartLabels.push(curretCategory.name);
     }
-    console.log(this.chartLabels);
-    console.log(this.categoriesData);
+  }
+  //may use this function to show on the table the activities of the selected category
+  chartClick(event:any) : void {
+    if(event.active.length != 0) {
+      //fi
+    }
   }
 }
