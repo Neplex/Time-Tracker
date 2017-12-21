@@ -20,7 +20,7 @@ export class CategorieListComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.dataBase.getCategories().subscribe(cats => {
       this.categories = cats;
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -29,6 +29,13 @@ export class CategorieListComponent implements OnInit {
 
   setCategory(cat: Category): void {
     this.onCategorySelect.emit(cat);
+  }
+
+  refresh(){
+    this.subscription = this.dataBase.getCategories().subscribe(cats => {
+      this.categories = cats;
+    });
+    this.setCategory(null);
   }
 
 }

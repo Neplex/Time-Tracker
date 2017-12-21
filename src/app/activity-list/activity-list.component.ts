@@ -14,6 +14,7 @@ export class ActivityListComponent implements OnInit {
 
   @Input() editMode: boolean;
   @Input() set category(category: Category) {
+    this._category = category;
     if (category == null) {
       this.subscription = this.dataBase.getActivities().subscribe(acts => {
         this.activities = acts;
@@ -26,6 +27,9 @@ export class ActivityListComponent implements OnInit {
       });
     }
   }
+  get category() {
+    return this._category;
+  }
   @Input() set filter(filter: string) {
     this.activities = this._actlist.filter(a => {
       return a.name.includes(filter) || a.description.includes(filter);
@@ -35,7 +39,8 @@ export class ActivityListComponent implements OnInit {
 
   public activities: Activity[] = [];
   private subscription: Subscription;
-  private _actlist: Activity[] = [];
+  private _actlist: Activity[] = [];  
+  private _category: Category;
 
   constructor(private dataBase: DataStorageService) { /* NOTHING TO DO */ }
 
@@ -47,8 +52,12 @@ export class ActivityListComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  toogleActivity(act: Activity) {
+  toggleActivity(act: Activity) {
     this.onActivitySelect.emit(act);
+  }
+
+  refresh(): void{
+    this.category = this.category;
   }
 
 }

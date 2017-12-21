@@ -12,6 +12,7 @@ export class CategorieListItemComponent implements OnInit {
 
   @Input('category') cat;
   @Output() onCategorySelect = new EventEmitter<void>();
+  @Output() onCategoryDelete = new EventEmitter<void>();
 
   constructor(public dialog: MatDialog, private dataBase: DataStorageService) { }
 
@@ -28,6 +29,7 @@ export class CategorieListItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataBase.deleteCategory(this.cat);
+        this.onCategoryDelete.emit();
       }
     });
   }

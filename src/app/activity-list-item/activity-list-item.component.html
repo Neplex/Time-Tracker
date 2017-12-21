@@ -3,7 +3,7 @@
   <h3 matLine>{{activity.name | titlecase}}</h3>
   <p matLine>{{activity.description | lowercase}}</p>
 
-  <button mat-icon-button (click)="toogleActivity()" *ngIf="!editMode">
+  <button mat-icon-button (click)="toggleActivity()" *ngIf="!editMode">
     <mat-icon>access_time</mat-icon>
   </button>
   <a mat-icon-button href="activities/{{activity.name}}" *ngIf="editMode">
