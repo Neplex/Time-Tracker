@@ -1,0 +1,61 @@
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.icons{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.button-raw{
+  display: flex;
+}
+
+.button-raw>button{
+  flex: 1 1;
+  margin: 0.5em;
+}
+
+.icons input{
+    display: none;
+    margin:0;padding:0;
+    -webkit-appearance:none;
+       -moz-appearance:none;
+            appearance:none;
+}
+
+.icons input:active +.icon{opacity: .5;}
+.icons input:checked +.icon{
+    -webkit-filter: none;
+       -moz-filter: none;
+            filter: none;
+  background-color: #DCDCDC;
+}
+
+.icon{
+  width: 1em;
+  height: 1em;
+  cursor:pointer;
+  background-size:contain;
+  background-repeat:no-repeat;
+  display:inline-block;
+  padding: 0.7em;
+  font-size: 2em;
+}
+
+.icons mat-icon{
+  font-size: 1em;
+}
+
+.icon:hover{
+  background-color: #DCDCDC;
+}
+
+#spanDefault{
+  font-weight: bold;
+  margin-left: -0.7em;
+  font-size: 0.5em;
+}

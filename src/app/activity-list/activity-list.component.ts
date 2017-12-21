@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { DataStorageService } from '../data-storage/data-storage.service';
 import { APP_NAME } from '../global';
 import { Activity } from '../activity';
 import { Category } from '../category';
@@ -10,68 +12,53 @@ import { Category } from '../category';
 })
 export class ActivityListComponent implements OnInit {
 
-  public categories: Category[];
-  public activities: Activity[];
-  public currentActivity: Activity = null;
-  public time: Date;
-  public app_name: string = APP_NAME;
+  @Input() editMode: boolean;
+  @Input() set category(category: Category) {
+    this._category = category;
+    if (category == null) {
+      this.subscription = this.dataBase.getActivities().subscribe(acts => {
+        this.activities = acts;
+        this._actlist = acts;
+      });
+    } else {
+      this.subscription = this.dataBase.getActivitiesByCategory(category).subscribe(acts => {
+        this.activities = acts;
+        this._actlist = acts;
+      });
+    }
+  }
+  get category() {
+    return this._category;
+  }
+  @Input() set filter(filter: string) {
+    if (filter) { filter = filter.toLowerCase(); }
+    this.activities = this._actlist.filter(a => {
+      return a.name.toLowerCase().includes(filter) || a.description.toLowerCase().includes(filter);
+    });
+  };
+  @Output() onActivitySelect = new EventEmitter<Activity>();
 
-  constructor() { /* NOTHING TO DO */ }
+  public activities: Activity[] = [];
+  private subscription: Subscription;
+  private _actlist: Activity[] = [];
+  private _category: Category;
+
+  constructor(private dataBase: DataStorageService) { /* NOTHING TO DO */ }
 
   ngOnInit() {
-    this.categories = CATEGORIES;
-    this.setCategory(null);
 
-    // Update the time spend on the active activity
-    setInterval(() => {
-      if (this.currentActivity != null) {
-        this.time = new Date(this.currentActivity.getCurrentTime());
-      }
-    }, 500);
   }
 
-  // Set the current category and update the activities list
-  setCategory(category: Category): void {
-    this.activities = [];
-    for (let i = 0; i < 10; i++) {
-      let act: Activity = new Activity();
-      act.name = act.description = "Activity " + i;
-      act.color = "blue";
-      this.activities.push(act);
-    }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
-  // Stop the active activity
-  stopActivity() {
-    if (this.currentActivity != null) {
-      this.currentActivity.stop();
-      this.currentActivity = null;
-    }
+  toggleActivity(act: Activity) {
+    this.onActivitySelect.emit(act);
   }
 
-  // Toogle an activity, stop the previous if it running
-  toogleActivity(activity: Activity) {
-    if (this.currentActivity == null) {
-      this.currentActivity = activity;
-      this.currentActivity.start();
-
-    } else {
-      this.currentActivity.stop();
-
-      if (this.currentActivity != activity) {
-        this.currentActivity = activity;
-        this.currentActivity.start();
-      } else {
-        this.currentActivity = null;
-      }
-    }
+  refresh(): void {
+    this.category = this.category;
   }
+
 }
-
-const CATEGORIES: Category[] = [
-  { "name": "Code", "icon": "code" },
-  { "name": "Sleep", "icon": "airline_seat_individual_suite" },
-  { "name": "Call", "icon": "call" },
-  { "name": "Games", "icon": "casino" },
-  { "name": "Movies", "icon": "movies" }
-]

@@ -1,34 +1,45 @@
 <!-- Activity add/edit/remove page  -->
 <mat-toolbar color="primary">
   <a mat-icon-button href="">
-    <mat-icon aria-label="Export">arrow_back</mat-icon>
+    <mat-icon aria-label="Close">close</mat-icon>
   </a>
-  <span>Activity</span>
+  <span *ngIf="!id">New activity</span>
+  <span *ngIf="id">Edit activity</span>
+  <span class="toolbar-divider"></span>
+  <button mat-button (click)="saveActivity()">SAVE</button>
 </mat-toolbar>
 
 <form>
-  <mat-form-field>
-    <input matInput placeholder="Name">
+  <mat-form-field id="matFieldName">
+    <input [formControl]="nameFormControl" [(ngModel)]="activity.name" name="activity.name" placeholder="Name" matInput required (input)=verifyNameActivity($event.target.value)>
+    <mat-error *ngIf="nameFormControl.hasError('required')">
+      Name is <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf="nameFormControl.hasError('existName')">
+      Name already exist
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field>
-    <textarea matInput placeholder="Description"></textarea>
+    <textarea [(ngModel)]="activity.description" name="activity.description" matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6" (input)=verifyNameActivity($event.target.value)></textarea>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Categories" multiple>
-      <mat-option *ngFor="let cat of categories" [value]="cat">{{cat}}</mat-option>
+    <mat-select placeholder="Categories" [formControl]="categoriesControl" [(ngModel)]="activity.categories" multiple (click)=verifyNameActivity($event.target.value)>
+      <mat-option *ngFor="let cat of categories" [value]="cat">{{cat | titlecase}}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <div class="button-raw">
-    <button mat-raised-button color="accent">
-      <mat-icon aria-label="Save">check</mat-icon>
-      Save
-    </button>
-    <button mat-raised-button color="warn">
-      <mat-icon aria-label="Delete">close</mat-icon>
-      Delete
-    </button>
+  <mat-form-field>
+    <mat-select placeholder="Color" [(value)]="activity.color" (click)=verifyNameActivity($event.target.value)>
+      <mat-option></mat-option>
+      <mat-option *ngFor="let color of colors" [value]="color">
+        <span [ngClass]="color" class="colorList"></span> {{ color | titlecase}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="mat-caption">
+    <span>* Required</span>
   </div>
 </form>
