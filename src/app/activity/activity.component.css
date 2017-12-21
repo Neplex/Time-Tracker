@@ -30,3 +30,11 @@ form>* {
 mat-option {
   vertical-align: middle;
 }
+
+mat-form-field{
+  padding-bottom: 1em;
+}
+
+.mat-caption{
+  color: rgba(0,0,0,.54);
+}
