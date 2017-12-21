@@ -87,7 +87,7 @@ export class DataStorageService {
     console.log("Initialisation des données de test");
     for(let i=0;i<5;++i){
       let act:Activity = new Activity();
-      act.name = "Activity "+i;
+      act.name = "activity "+i;
       act.color = AVAILABLE_COLORS[i];
       act.description = "Je suis l'activité "+i;
       this.saveActivity(act);
@@ -176,9 +176,9 @@ export class DataStorageService {
       open = this.openDB().subscribe((readyState) => {
           sub = this.getAll('Activities').subscribe((x) => {
             let tmp:Activity = this.fromDBToActivity(x)
-            let catTmp:Category;
+            let catTmp:string;
             for( catTmp of tmp.getCategories()){
-              if(cat.name == catTmp.name){
+              if(cat.name == catTmp){
                 acts.push(this.fromDBToActivity(x));
               }
             }
@@ -376,7 +376,7 @@ export class DataStorageService {
     act.description = x.description;
     act.color = x.color;
     for( let cat of x.categories){
-      act.addCategory(this.fromDBToCategory(cat));
+      act.addCategory(cat);
     }
     for( let timeS of x.time_slots){
       let timeSTmp = new TimeSlot(timeS.start,timeS.end);

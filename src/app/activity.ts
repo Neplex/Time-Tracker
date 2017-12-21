@@ -7,15 +7,15 @@ export class Activity {
   public description: string = null;   // The description
   public color: string = null;         // The color for display
 
-  private categories: Category[] = []; // List of categories
+  private categories: string[] = []; // List of categories
   private time_slots: TimeSlot[] = []; // List of time slots
   private start_date: Date = null;     // Start date of the current time slot
 
   // Add a new category
-  addCategory(ct: Category): void { this.categories.push(ct); }
+  addCategory(ct: string): void { this.categories.push(ct); }
 
   // Get all categories
-  getCategories(): Category[] { return this.categories; }
+  getCategories(): string[] { return this.categories; }
 
   // Add time slots
   addTimeSlot(ts: TimeSlot): void { this.time_slots.push(ts); }
@@ -42,11 +42,8 @@ export class Activity {
   stop(): TimeSlot {
     let ts: TimeSlot = null;
     if (this.start_date) {
-      let d = new Date(this.getCurrentTime());
-      if (d.getHours() ||  d.getMinutes()) {
-        ts = new TimeSlot(this.start_date, new Date());
-        this.addTimeSlot(ts);
-      }
+      ts = new TimeSlot(this.start_date, new Date());
+      this.addTimeSlot(ts);
       this.start_date = null;
     }
     return ts;

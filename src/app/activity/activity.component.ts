@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, Params, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from '../data-storage/data-storage.service';
 import { AVAILABLE_COLORS } from '../global';
@@ -24,6 +24,7 @@ export class ActivityComponent implements OnInit {
   private subscriptionDB: Subscription;
   private subscription: Subscription;
   public activity: Activity;
+  public oldActivity: Activity;
   public activities: Activity[];
   public categories: string[];
   public colors: string[];
@@ -33,7 +34,7 @@ export class ActivityComponent implements OnInit {
 
   private nameFormControl: FormControl;
 
-  constructor(private route: ActivatedRoute, private dataBase: DataStorageService) {
+  constructor(private router: Router, private route: ActivatedRoute, private dataBase: DataStorageService) {
     this.activity = new Activity();
     this.activities = [];
     this.categories = [];
@@ -67,6 +68,7 @@ export class ActivityComponent implements OnInit {
       if ((this.id = param['id']) != null) { // Search the activity by name
         this.subscriptionDB = this.dataBase.getActivity(this.id).subscribe(acts => {
           this.activity = acts;
+          this.oldActivity = acts;
         })
       }
     });
@@ -81,11 +83,11 @@ export class ActivityComponent implements OnInit {
   saveActivity() {
     if(okToSave){
       this.activity.name = (((this.activity.name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
-      if (this.id != null) {
-        this.dataBase.deleteActivity(this.activity);
+      if (this.id && this.oldActivity.name != this.activity.name) {
+        this.dataBase.deleteActivity(this.oldActivity);
       }
       this.dataBase.saveActivity(this.activity);
-      window.location.replace("activities");
+      this.router.navigate(["activities"]);
     }
   }
 
