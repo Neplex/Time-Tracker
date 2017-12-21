@@ -11,7 +11,13 @@
 
 <form>
   <mat-form-field>
-    <input [(ngModel)]="category.name" name="category.name" matInput placeholder="Name">
+    <input [formControl]="nameFormControl" [(ngModel)]="category.name" name="category.name" placeholder="Name" matInput required (input)=verifyNameCategory($event.target.value)>
+    <mat-error *ngIf="nameFormControl.hasError('required')">
+      Name is <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf="nameFormControl.hasError('existName')">
+      Name already exist
+    </mat-error>
   </mat-form-field>
   <div class="mat-typography">
     <p>Choose icon:</p>
@@ -20,7 +26,7 @@
       <input [(ngModel)]="category.icon" value="" type="radio" id="default" name="icon">
       <label for="default" class="icon"><span id="spanDefault">EMPTY</span></label>
       <ng-container *ngFor="let icon of icons">
-        <input [(ngModel)]="category.icon" value="{{icon}}" type="radio" id="{{icon}}" name="icon">
+        <input [(ngModel)]="category.icon" value="{{icon}}" type="radio" id="{{icon}}" name="icon" (click)=verifyNameCategory($event.target.value)>
         <label for="{{icon}}" class="icon"><mat-icon matListIcon>{{icon}}</mat-icon></label>
       </ng-container>
     </div>

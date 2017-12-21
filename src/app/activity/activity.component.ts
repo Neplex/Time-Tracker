@@ -36,10 +36,11 @@ export class ActivityComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private dataBase: DataStorageService) {
     this.activity = new Activity();
+    this.oldActivity = new Activity();
     this.activities = [];
     this.categories = [];
     this.colors = AVAILABLE_COLORS;
-    this.categoriesControl = new FormControl();
+    this.categoriesControl = new FormControl({disabled: !this.categories.length});
     this.nameFormControl = new FormControl('', [
       Validators.required,
       this.existNameValidator
@@ -68,7 +69,7 @@ export class ActivityComponent implements OnInit {
       if ((this.id = param['id']) != null) { // Search the activity by name
         this.subscriptionDB = this.dataBase.getActivity(this.id).subscribe(acts => {
           this.activity = acts;
-          this.oldActivity = acts;
+          this.oldActivity.name = acts.name;
         })
       }
     });
@@ -76,7 +77,9 @@ export class ActivityComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptionParam.unsubscribe();
-    this.subscriptionDB.unsubscribe();
+    if(this.subscriptionDB){
+      this.subscriptionDB.unsubscribe();
+    }
     this.subscription.unsubscribe();
   }
 

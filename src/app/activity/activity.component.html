@@ -25,7 +25,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Categories" [formControl]="categoriesControl" [(ngModel)]="activity.categories" multiple (click)=verifyNameActivity($event.target.value)>
+    <mat-select placeholder="Categories" [formControl]="categoriesControl" [(ngModel)]="activity.categories" [disabled]="!categories.length" multiple (click)=verifyNameActivity($event.target.value)>
       <mat-option *ngFor="let cat of categories" [value]="cat">{{cat | titlecase}}</mat-option>
     </mat-select>
   </mat-form-field>

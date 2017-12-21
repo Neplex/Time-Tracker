@@ -4,7 +4,7 @@ import { TimeSlot } from './time-slot';
 export class Activity {
 
   public name: string = null;          // The name of activity
-  public description: string = null;   // The description
+  public description: string = "";     // The description
   public color: string = null;         // The color for display
 
   private categories: string[] = []; // List of categories

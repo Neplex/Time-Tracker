@@ -94,7 +94,7 @@ export class DataStorageService {
     }
     for(let i=0;i<3;++i){
       let cat:Category = new Category();
-      cat.name = "Category "+i;
+      cat.name = "category "+i;
       cat.icon = "code";
       this.saveCategory(cat);
     }
