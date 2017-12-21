@@ -10,7 +10,7 @@ import {
   MatInputModule,
   MatSelectModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
   MatPaginatorModule,
   MatSortModule,
   MatTableModule
@@ -25,9 +25,9 @@ import {
     MatListModule,
     MatSidenavModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
   ],
   exports: [
     MatButtonModule,
@@ -38,10 +38,10 @@ import {
     MatSelectModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
     MatPaginatorModule,
     MatSortModule,
-    MatTableModule
+    MatTableModule,
   ],
   declarations: []
 })
