@@ -1,5 +1,5 @@
-.color {
+mat-list-item span {
   width: 0 !important;
   height: 0 !important;
-  padding: .7em !important;
+  padding: 15px !important;
 }

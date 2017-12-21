@@ -10,7 +10,7 @@
     <app-main-toolbar [title]="app_name" [(activity)]="currentActivity" [(search)]="searchText" [(editMode)]="editMode" (menu)="sidenav.open()"></app-main-toolbar>
 
     <!-- list -->
-    <app-activity-list [editMode]="editMode" [category]="currentCategory" (onActivitySelect)="currentActivity = $event"></app-activity-list>
+    <app-activity-list [filter]="searchText" [editMode]="editMode" [category]="currentCategory" (onActivitySelect)="currentActivity = $event"></app-activity-list>
 
     <!-- FAB -->
     <a mat-fab id="fab" href="add/activity">

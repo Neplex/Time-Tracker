@@ -1,36 +1,49 @@
-<mat-toolbar color="primary" *ngIf="!editMode; else toolbarEdit">
-  <mat-toolbar-row>
-    <button mat-icon-button (click)="openMenu()">
-      <mat-icon aria-label="Menu">menu</mat-icon>
-    </button>
-    <span>{{ title | titlecase }}</span>
+<ng-container [ngSwitch]="mode">
 
-    <span class="toolbar-divider"></span>
+  <!-- Edit toolbar -->
+  <mat-toolbar color="accent" *ngSwitchCase="'edit'">
+    <button mat-icon-button (click)="toggleEditMode()">
+        <mat-icon>close</mat-icon>
+      </button>
+    <span>Edit activities</span>
+  </mat-toolbar>
 
-    <button mat-icon-button>
-      <mat-icon>search</mat-icon>
-    </button>
-    <button mat-icon-button [matMenuTriggerFor]="toolbar">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-  </mat-toolbar-row>
+  <!-- Search toolbar -->
+  <mat-toolbar color="primary" *ngSwitchCase="'search'">
+    <button mat-icon-button (click)="toggleSearchMode()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    <mat-form-field>
+      <input matInput placeholder="Search" [(ngModel)]="search">
+    </mat-form-field>
+  </mat-toolbar>
 
-  <!-- chrono -->
-  <app-chrono [(activity)]="activity"></app-chrono>
-</mat-toolbar>
+  <!-- Main toolbar -->
+  <mat-toolbar color="primary" *ngSwitchDefault>
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="openMenu()">
+          <mat-icon aria-label="Menu">menu</mat-icon>
+        </button>
+      <span>{{ title | titlecase }}</span>
 
+      <span class="toolbar-divider"></span>
+
+      <button mat-icon-button (click)="toggleSearchMode()">
+          <mat-icon>search</mat-icon>
+        </button>
+      <button mat-icon-button [matMenuTriggerFor]="toolbar">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+    </mat-toolbar-row>
+
+    <!-- chrono -->
+    <mat-toolbar-row id="chrono" *ngIf="activity">
+      <app-chrono [(activity)]="activity"></app-chrono>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</ng-container>
 
 <!-- Menus -->
 <mat-menu #toolbar="matMenu">
-  <button mat-menu-item (click)="toogleEditMode()">Edit</button>
+  <button mat-menu-item (click)="toggleEditMode()">Edit</button>
 </mat-menu>
-
-<!-- Templates -->
-<ng-template #toolbarEdit>
-  <mat-toolbar color="accent">
-    <button mat-icon-button (click)="toogleEditMode()">
-      <mat-icon>close</mat-icon>
-    </button>
-    <span>Edit activities</span>
-  </mat-toolbar>
-</ng-template>

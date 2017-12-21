@@ -9,15 +9,17 @@ import { Calendar } from '../calendar';
 })
 export class CalendarComponent implements OnInit {
 
-  @Input('events') events: CalendarEvent[] = [];
-  public calendar: Calendar;
-
-  constructor() {
+  @Input()
+  set events(evs: CalendarEvent[]) {
     this.calendar = new Calendar();
+    evs.forEach(e => this.calendar.addEvent(e));
   }
 
+  public calendar: Calendar;
+
+  constructor() { }
+
   ngOnInit() {
-    this.events.forEach(e => this.calendar.addEvent(e));
   }
 
 }

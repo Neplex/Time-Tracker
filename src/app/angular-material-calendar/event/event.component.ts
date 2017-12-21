@@ -15,4 +15,9 @@ export class EventComponent implements OnInit {
   ngOnInit() {
   }
 
+  getTime() {
+    let gmt = this.event.startDate.getTimezoneOffset() * 60000;
+    return this.event.endDate.getTime() - this.event.startDate.getTime() + gmt;
+  }
+
 }

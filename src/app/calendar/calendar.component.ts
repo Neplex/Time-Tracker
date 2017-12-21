@@ -22,12 +22,14 @@ export class CalendarComponent implements OnInit {
   ngOnInit() {
 
     this.subscription = this.dataBase.getActivities().subscribe(acts => {
+      let tab = [];
       acts.forEach(a => {
         a.getTimeSlots().forEach(ts => {
           let event = new CalendarEvent(a.name, ts.start, ts.end, a.color);
-          this.events.push(event);
+          tab.push(event);
         });
       });
+      this.events = tab;
     });
   }
 

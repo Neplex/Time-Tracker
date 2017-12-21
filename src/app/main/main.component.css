@@ -19,9 +19,3 @@ mat-sidenav-container, .container {
 mat-sidenav {
   width: 15em;
 }
-
-mat-list-item span {
-  width: 0 !important;
-  height: 0 !important;
-  padding: 15px !important;
-}
