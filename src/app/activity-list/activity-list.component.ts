@@ -17,17 +17,25 @@ export class ActivityListComponent implements OnInit {
     if (category == null) {
       this.subscription = this.dataBase.getActivities().subscribe(acts => {
         this.activities = acts;
+        this._actlist = acts;
       });
     } else {
       this.subscription = this.dataBase.getActivitiesByCategory(category).subscribe(acts => {
         this.activities = acts;
+        this._actlist = acts;
       });
     }
   }
+  @Input() set filter(filter: string) {
+    this.activities = this._actlist.filter(a => {
+      return a.name.includes(filter) || a.description.includes(filter);
+    });
+  };
   @Output() onActivitySelect = new EventEmitter<Activity>();
 
   public activities: Activity[] = [];
   private subscription: Subscription;
+  private _actlist: Activity[] = [];
 
   constructor(private dataBase: DataStorageService) { /* NOTHING TO DO */ }
 

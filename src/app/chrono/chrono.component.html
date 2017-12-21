@@ -1,10 +1,10 @@
-<mat-toolbar-row chrono *ngIf="activity">
-  <h1>{{time | date:'HH:mm'}}<small>{{time | date:'ss'}}</small></h1>
-</mat-toolbar-row>
+<!-- Chrono -->
+<h1>{{time | date:'HH:mm'}}<small>{{time | date:'ss'}}</small></h1>
 
-<mat-toolbar-row *ngIf="activity">
-  {{activity.name | titlecase}} <span class="toolbar-divider"></span>
+<!-- Controls -->
+<div>
+  {{currentActivity.name | titlecase}} <span class="toolbar-divider"></span>
   <button mat-icon-button class="toto" (click)="stopActivity()">
     <mat-icon>done</mat-icon>
   </button>
-</mat-toolbar-row>
+</div>
