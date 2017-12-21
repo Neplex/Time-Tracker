@@ -80,7 +80,7 @@ export class StatsComponent implements OnInit {
     let a = new Activity();
     a.name = "Web project";
     a.color = "blue";
-    a.addCategory (c);
+    a.addCategory (c.name);
     a.description = "Working on web project"
     a.addTimeSlot(new TimeSlot(
       new Date("2017-11-23T10:20:00"),
@@ -113,7 +113,7 @@ export class StatsComponent implements OnInit {
     a = new Activity();
     a.name = "Have fun";
     a.color = "teal";
-    a.addCategory(c);
+    a.addCategory(c.name);
     a.description = "Relaxing with good vibes";
     this.categories.push(c);
 
@@ -140,7 +140,7 @@ export class StatsComponent implements OnInit {
     a = new Activity();
     a.name = "badminton";
     a.color = "blue";
-    a.addCategory(c);
+    a.addCategory(c.name);
     a.description = "Playing with main gauche";
     a.addTimeSlot(new TimeSlot(
       new Date("2017-12-15T18:00:00"),
