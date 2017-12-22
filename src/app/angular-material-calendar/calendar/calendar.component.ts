@@ -15,6 +15,14 @@ export class CalendarComponent implements OnInit {
     evs.forEach(e => this.calendar.addEvent(e));
   }
 
+  @Input()
+  set date(d: Date) {
+    const dayElement = document.querySelector(
+      "#D" + d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
+    );
+    if (dayElement) { dayElement.scrollIntoView(); }
+  }
+
   public calendar: Calendar;
 
   constructor() { }

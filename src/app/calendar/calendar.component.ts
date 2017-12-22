@@ -23,6 +23,9 @@ export class CalendarComponent implements OnInit {
 
     this.subscription = this.dataBase.getActivities().subscribe(acts => {
       let tab = [];
+      for (let i = 0; i < 10; i++) {
+        tab.push(new CalendarEvent("TEST", new Date(0), new Date(0)));
+      }
       acts.forEach(a => {
         a.getTimeSlots().forEach(ts => {
           let event = new CalendarEvent(a.name, ts.start, ts.end, a.color);
@@ -35,6 +38,10 @@ export class CalendarComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  setToday(): void {
+    this.date = new Date();
   }
 
 }
