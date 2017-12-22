@@ -3,8 +3,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from '../data-storage/data-storage.service';
-import { Category } from '../category';
 import { AVAILABLE_ICONS } from '../global';
+import { Category } from '../category';
 
 import { PageEvent } from '@angular/material';
 
@@ -18,6 +18,7 @@ export class CategoryComponent implements OnInit {
   private subscriptionParam: Subscription;
   private subscriptionDB: Subscription;
   private subscription: Subscription;
+  private subscriptionUpdateCatInAct: Subscription;
   public category: Category;
   public oldCategory: Category;
   public categories: Category[];
@@ -89,6 +90,18 @@ export class CategoryComponent implements OnInit {
         this.dataBase.deleteCategory(this.oldCategory);
       }
       this.dataBase.saveCategory(this.category);
+
+      // update liste categories d'une activity
+      this.subscriptionUpdateCatInAct = this.dataBase.getActivities().subscribe(acts => {
+        for(let i = 0; i < acts.length; i++){
+          for(let j = 0; j < acts[i].categories.length; j++){
+            if(this.id == acts[i].categories[j]){
+              acts[i].categories[j] = this.category.name;
+              this.dataBase.saveActivity(acts[i]);
+            }
+          }
+        }
+      });
       this.router.navigate(["activities"]);
     }
   }
