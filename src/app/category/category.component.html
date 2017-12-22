@@ -1,8 +1,8 @@
 <!-- Category add/edit/remove page  -->
 <mat-toolbar color="primary">
-  <a mat-icon-button [routerLink]="['/']">
+  <button mat-icon-button [routerLink]="['/']">
     <mat-icon aria-label="Close">close</mat-icon>
-  </a>
+  </button>
   <span *ngIf="!id">New category</span>
   <span *ngIf="id">Edit category</span>
   <span class="toolbar-divider"></span>
@@ -31,7 +31,7 @@
     </div>
 
     <mat-paginator [length]="icons.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event"></mat-paginator>
-    
+
   </div>
 
   <div class="mat-caption">

@@ -1,8 +1,8 @@
 <!-- Activity add/edit/remove page  -->
 <mat-toolbar color="primary">
-  <a mat-icon-button [routerLink]="['/']">
+  <button mat-icon-button [routerLink]="['/']">
     <mat-icon aria-label="Close">close</mat-icon>
-  </a>
+  </button>
   <span *ngIf="!id">New activity</span>
   <span *ngIf="id">Edit activity</span>
   <span class="toolbar-divider"></span>
