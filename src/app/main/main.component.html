@@ -7,7 +7,7 @@
 
   <div class="container">
     <!-- toolbar -->
-    <app-main-toolbar [title]="app_name" [(activity)]="currentActivity" [(search)]="searchText" [(editMode)]="editMode" (menu)="sidenav.open()"></app-main-toolbar>
+    <app-main-toolbar [title]="app_name" [(activity)]="currentActivity" [(search)]="searchText" [(editMode)]="editMode" (menu)="sidenav.open()" class="mat-elevation-z4"></app-main-toolbar>
 
     <!-- list -->
     <app-activity-list [filter]="searchText" [editMode]="editMode" [category]="currentCategory" (onActivitySelect)="currentActivity = $event"></app-activity-list>
