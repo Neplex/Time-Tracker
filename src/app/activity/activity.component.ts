@@ -7,12 +7,6 @@ import { AVAILABLE_COLORS } from '../global';
 import { Activity } from '../activity';
 import { Category } from '../category';
 
-import { AbstractControl } from '@angular/forms';
-
-let nameFound: boolean = false;
-
-let okToSave: boolean = false;
-
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -41,17 +35,11 @@ export class ActivityComponent implements OnInit {
     this.categories = [];
     this.colors = AVAILABLE_COLORS;
     this.categoriesControl = new FormControl({disabled: !this.categories.length});
-    this.nameFormControl = new FormControl('', [
-      Validators.required,
-      this.existNameValidator
-    ]);
+    this.nameFormControl = new FormControl('', [Validators.required]);
   }
 
-  existNameValidator(control: AbstractControl) {
-    if(nameFound){
-      return { existName: nameFound };
-    }
-    return null;
+  setExistName(v: boolean){
+    this.nameFormControl.setErrors({ existName: v });
   }
 
   ngOnInit() {
@@ -84,7 +72,7 @@ export class ActivityComponent implements OnInit {
   }
 
   saveActivity() {
-    if(okToSave){
+    if(this.nameFormControl.errors == null){
       this.activity.name = (((this.activity.name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
       if (this.id && this.oldActivity.name != this.activity.name) {
         this.dataBase.deleteActivity(this.oldActivity);
@@ -94,10 +82,9 @@ export class ActivityComponent implements OnInit {
     }
   }
 
-  verifyNameActivity(nameAct){
+  verifyNameActivity(){
 
-    nameFound=false;
-    okToSave=false;
+    this.setExistName(false);
     //replace(/[\s]{2,}/g," ") => supprime les doubles espaces ou plus
     let actInput = (((this.activity.name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
     let actPram = "";
@@ -115,20 +102,16 @@ export class ActivityComponent implements OnInit {
     }
 
     if(newAct){
-      this.nameFormControl = new FormControl(this.activity.name, [Validators.required, this.existNameValidator]);
-      okToSave=true;
+      this.nameFormControl.setValue(this.activity.name);
     }
     else{
       this.dataBase.getActivity(actInput).subscribe(act => {
         var activityFound = null;
         if(actInput != ""){
-          this.nameFormControl = new FormControl(this.activity.name, [Validators.required, this.existNameValidator]);
+          this.nameFormControl.setValue(this.activity.name);
           activityFound = (this.activity.name).toLowerCase();
-          if(actInput == actPram){
-            okToSave = true;
-          }
-          else{
-            nameFound=true;
+          if(actInput != actPram){
+            this.setExistName(true);
           }
         }
       });

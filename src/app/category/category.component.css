@@ -60,6 +60,10 @@ form {
   font-size: 0.5em;
 }
 
-mat-form-field{
+mat-form-field, .mat-typography{
   padding-bottom: 1em;
+}
+
+.mat-caption{
+  color: rgba(0,0,0,.54);
 }
