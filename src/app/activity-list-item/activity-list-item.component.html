@@ -6,9 +6,9 @@
   <button mat-icon-button (click)="toggleActivity()" *ngIf="!editMode">
     <mat-icon>access_time</mat-icon>
   </button>
-  <a mat-icon-button [routerLink]="['/activities', activity.name]" *ngIf="editMode">
+  <button mat-icon-button [routerLink]="['/activities', activity.name]" *ngIf="editMode">
     <mat-icon>edit</mat-icon>
-  </a>
+  </button>
   <button mat-icon-button (click)="confirmDelete()" *ngIf="editMode">
     <mat-icon>delete</mat-icon>
   </button>
