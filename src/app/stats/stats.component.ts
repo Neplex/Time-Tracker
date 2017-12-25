@@ -8,6 +8,11 @@ import { Activity } from '../activity';
 import { Category } from '../category';
 import { TimeSlot } from '../time-slot';
 
+import {DataStorageService} from '../data-storage/data-storage.service';
+import { Subscription } from 'rxjs';
+
+import { BaseChartDirective } from 'ng2-charts/ng2-charts';
+
 
 @Component({
   selector: 'app-stats',
@@ -17,140 +22,123 @@ import { TimeSlot } from '../time-slot';
 
 export class StatsComponent implements OnInit {
 
-  dateStart :Date = null; //start Date
-  dateEnd :Date = null; //end Date
+  private subscriptionActivities: Subscription;
+  private subscriptionCategories: Subscription;
+  private dateStart :Date = null; //start Date
+  private dateEnd :Date = null; //end Date
 
-  totalTime : number= 0; //total time spent in millisecondes
+  private totalTime : number= 0; //total time spent in millisecondes
 
-  pageSize = 10; //number activities per page
-  pagePaginator = [5,10,20]; //paginator sizes
-  displayedCols = ["name","time"]; //displayed column names
-
-
-  categories: Category[] = []; //categories
-  activitiesInInterval: Activity[] = []; //activities that must be shown in the page
-  allActivities: Activity[] = []; //all activities
+  private pageSize = 10; //number activities per page
+  private pagePaginator = [5,10,20,50]; //paginator sizes
+  private displayedCols = ["name","time"]; //displayed column names
 
 
-  dataSource:MatTableDataSource<Activity> = null; //datasource for the page
+  private activitiesInInterval: Activity[] = []; //activities that must be shown on the page
+  private allActivities: Activity[] = []; //all activities
+
+
+  private dataSource:MatTableDataSource<Activity> = null; //datasource for the page
   @ViewChild(MatPaginator) paginator: MatPaginator; //paginator
   @ViewChild(MatSort) sort: MatSort; // displaying
+  @ViewChild('myChart') chart: BaseChartDirective;
 
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  chartLabels:string[] = []; //labels for the donuts charts (the categories name)
-  categoriesData:number[] = []; // list of the total time spend for each categoris
-  chartType:string = 'doughnut'; //the chart type
-  chartOptions : any = {
-    legend : {
-      position : "right",
-    },
-    tooltips : {
-      custom: function(data:any) {
-        if(data.body) {
-          console.log(data);
-          data.width = 150; //tooltip length
-          let text:string = data.body[0].lines[0];
-          let textSplit: string[] = text.split(" ");
-          let time :number = +textSplit[1];
-          let datePipe = new DatePipe("en-US");
-          let affiche = datePipe.transform(new Date(time), "HH:mm:ss");
-          data.body[0].lines[0] = "Durée total : "+affiche;
-        }
+  private chartLabels:string[] = []; //labels for the donuts charts (the categories name)
+  private categoriesData:number[] = []; // list of the total time spend for each category
+  private chartType:string = 'doughnut'; //the chart type
+  private chartColors: any[] = [ //Donut's colors
+                                          // ionk to colors http://www.color-hex.com
+                                      { backgroundColor: [
+                                      "#20b2aa",
+                                      "#f08080",
+                                      "#fa8072",
+                                      "#ff7373",
+                                      "#40e0d0",
+                                      "#7fffd4",
+                                      "#0f85fe",
+                                      "#bd6416",
+                                      "#fdb103",
+                                      "#2d8c9e",
+                                      "#d28240",
+                                      "#8e0d0d",
+                                      "#d89840",
+                                      "#00ffd2",
+                                      "#ff9a00",
+                                      "#ffc100",
+                                      "#ff9800",
+                                      "#e0d6db",
+                                      "#c8ae98",
+                                      "#008080",
+                                      "#ffc0cb",
+                                      "#ffffff",
+                                      "#000000",
+                                      "#ff0000",
+                                      "#002600",
+                                      "#709330",
+                                      "#0d5330",
+                                      "#e7f2ff",
+                                      "#fdaf27",
+                                      "#e7f2ff",
+                                      "#f9edf5",
+                                      "#e0d6db",
+                                      "#f2e2e5",
+                                      "#008080",
+                                      "#900c3f",
+                                      "#fdaf27",
+                                      "#0d5330",
+                                      "#c37257",
+                                      "#748589",
+                                      "#55895a",
+                                      "#aa9588",
+                                      ] }];
+  private chartOptions : any = {
+      legend : {
+        position : "right",
       },
-    }
-  };
+      tooltips : {
+        custom: function(data:any) {
+          if(data.body) {
+            let text:string = data.body[0].lines[0];
+            let textSplit: string[] = text.split(" ");
+            let time :number = +textSplit[textSplit.length-1];
+            let datePipe = new DatePipe("en-US");
+            let elapsedTimeStr = datePipe.transform(new Date(time), "HH:mm:ss");//transform date into string as format HH:mm:ss
+            text = "";
+            for(let i=0; i < textSplit.length-1;++i) { // in case we have a category name with space
+              text += textSplit[i] + " ";
+            }
+            data.body[0].lines[0] =text+elapsedTimeStr;
+          }
+        },
+      }
+    };
 
-  constructor() { }
+  constructor(private dataStorage: DataStorageService) { }
 
   ngOnInit() {
-
-    /**********tests**********/
-
-
-    //creating activities
-
-    let c = new Category();
-    c.name = "development"
-    this.categories.push(c);
-    let a = new Activity();
-    a.name = "Web project";
-    a.color = "blue";
-    a.addCategory (c.name);
-    a.description = "Working on web project"
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-11-23T10:20:00"),
-      new Date("2017-11-23T11:34:00")
-    ));
-
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-11-24T10:20:00"),
-      new Date("2017-11-24T11:34:00")
-    ));
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-11-26T10:20:00"),
-      new Date("2017-11-26T11:34:00")
-    ));
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-12-08T10:00:00"),
-      new Date("2017-12-08T11:00:00")
-    ));
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-12-08T10:30:00"),
-      new Date("2017-12-08T11:30:00")
-    ));
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-12-08T15:30:00"),
-      new Date("2017-12-08T17:30:00")
-    ));
-    this.allActivities.push(a);
-    c = new Category();
-    c.name = "relax";
-    a = new Activity();
-    a.name = "Have fun";
-    a.color = "teal";
-    a.addCategory(c.name);
-    a.description = "Relaxing with good vibes";
-    this.categories.push(c);
-
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-11-23T12:00:00"),
-      new Date("2017-11-23T14:00:00")
-    ));
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-11-23T16:00:00"),
-      new Date("2017-11-23T17:00:00")
-    ));
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-11-24T23:00:00"),
-      new Date("2017-11-25T01:00:00")
-    ));
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-12-08T08:00:00"),
-      new Date("2017-12-08T09:00:00")
-    ));
-
-    this.allActivities.push(a);
-    c = new Category();
-    c.name = "sport";
-    a = new Activity();
-    a.name = "badminton";
-    a.color = "blue";
-    a.addCategory(c.name);
-    a.description = "Playing with main gauche";
-    a.addTimeSlot(new TimeSlot(
-      new Date("2017-12-15T18:00:00"),
-      new Date("2017-12-15T20:00:00")
-    ));
-    this.categories.push(c);
-    this.allActivities.push(a);
-    this.activitiesInInterval = this.allActivities;
-    this.dataSource = new MatTableDataSource<Activity>(this.activitiesInInterval);
-    this.setDonuts();
+    this.update();
+    this.subscriptionActivities = this.dataStorage.getActivities().subscribe(acts =>
+    {
+      for(let i = 0;i<acts.length;++i) {
+        this.allActivities.push(acts[i]);
+        this.activitiesInInterval.push(acts[i]);
+      }
+      if(this.chartLabels.length != 0) { //update the chart if categories are already selected
+        this.update();
+      }
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+    this.subscriptionCategories = this.dataStorage.getCategories().subscribe(acts =>
+    {
+      for(let i = 0;i<acts.length;++i) {
+        this.chartLabels.push(acts[i].name);
+      }
+      if(this.allActivities.length != 0) { //update the chart if activities are already selected
+        this.update();
+      }
+    });
   }
 
   //return time for an activity
@@ -168,7 +156,7 @@ export class StatsComponent implements OnInit {
   //update the chart and the display of activities
   update() {
     let activity: Activity = null;
-    this.activitiesInInterval = [];
+    this.activitiesInInterval.length = 0;
     for(let i=0; i < this.allActivities.length;++i) {
       activity = this.allActivities[i];
       if(this.getTempsActivity(activity) > 0) {
@@ -176,6 +164,9 @@ export class StatsComponent implements OnInit {
       }
     }
     this.dataSource = new MatTableDataSource<Activity>(this.activitiesInInterval);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.calculTotalTime();
     this.setDonuts();
   }
 
@@ -209,29 +200,26 @@ export class StatsComponent implements OnInit {
 
   //set the charts datas
   setDonuts() {
-    let val:number = null;
-    let curretCategory:Category = null;
+    let val:number = 0;
+    let curretCategory:string = "";
     let activity : Activity = null;
-    this.chartLabels = [];
     this.categoriesData = [];
-    let times_slot : TimeSlot[] = [];
-    for(let i = 0; i< this.categories.length;++i) {
-      curretCategory = this.categories[i];
-      val = 0;
+    for(let i = 0; i< this.chartLabels.length;++i) {
+      curretCategory = this.chartLabels[i];
       for(let j = 0; j < this.activitiesInInterval.length;++j) {
         activity = this.activitiesInInterval[j];
-        if(activity.hasCategory(curretCategory.name))  {
+        if(activity.hasCategory(curretCategory))  {
           val += activity.getTotalTime(this.dateStart, this.dateEnd);
         }
       }
       this.categoriesData.push(val);
-      this.chartLabels.push(curretCategory.name);
+      val = 0;
     }
   }
-  //may use this function to show on the table the activities of the selected category
-  chartClick(event:any) : void {
-    if(event.active.length != 0) {
-      //fi
-    }
+
+  ngOnDestroy() {
+    this.subscriptionActivities.unsubscribe();
+    this.subscriptionCategories.unsubscribe();
   }
+
 }
