@@ -127,8 +127,6 @@ export class StatsComponent implements OnInit {
       if(this.chartLabels.length != 0) { //update the chart if categories are already selected
         this.update();
       }
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
     });
     this.subscriptionCategories = this.dataStorage.getCategories().subscribe(acts =>
     {
