@@ -24,18 +24,20 @@
 
 <!-- Total time -->
 <div class="total_time">
-  <span>Total elapsed time : {{calculTotalTime() | date:'HH:mm:ss'}}</span>
+  <span>Total elapsed time : {{totalTime | date:'HH:mm:ss'}}</span>
   <!--
   -->
 </div>
 <!-- Pie chart of time by category -->
-
 <div style="display: block">
-  <canvas baseChart
+  <!--
+<canvas baseChart #myChart="base-chart"></canvas>
+-->
+  <canvas baseChart class="donut"
       [data]="categoriesData"
       [labels]="chartLabels"
       [chartType]="chartType"
-      (chartClick)="chartClick($event)"
+      [colors]="chartColors"
       [options] = "chartOptions"
       >
   </canvas>
