@@ -4,7 +4,7 @@ import { TimeSlot } from './time-slot';
 export class Activity {
 
   public name: string = null;          // The name of activity
-  public description: string = null;   // The description
+  public description: string = "";     // The description
   public color: string = null;         // The color for display
 
   private categories: string[] = []; // List of categories
@@ -60,8 +60,11 @@ export class Activity {
   stop(): TimeSlot {
     let ts: TimeSlot = null;
     if (this.start_date) {
-      ts = new TimeSlot(this.start_date, new Date());
-      this.addTimeSlot(ts);
+      let d = new Date(this.getCurrentTime());
+      if (d.getHours() || d.getMinutes()) {
+        ts = new TimeSlot(this.start_date, new Date());
+        this.addTimeSlot(ts);
+      }
       this.start_date = null;
     }
     return ts;

@@ -7,6 +7,6 @@
 </mat-list-item>
 
 <mat-menu #menu="matMenu">
-  <a mat-menu-item href="categories/{{cat.name}}">Edit</a>
+  <button mat-menu-item [routerLink]="['/categories', cat.name]">Edit</button>
   <button mat-menu-item (click)="confirmDelete()">Delete</button>
 </mat-menu>

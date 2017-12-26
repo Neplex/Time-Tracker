@@ -37,7 +37,8 @@ import {
     MatMenuModule,
     MatCardModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatPaginatorModule
   ],
   exports: [
     MatButtonModule,

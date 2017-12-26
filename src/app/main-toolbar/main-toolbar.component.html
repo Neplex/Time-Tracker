@@ -13,7 +13,7 @@
     <button mat-icon-button (click)="toggleSearchMode()">
         <mat-icon>arrow_back</mat-icon>
       </button>
-    <mat-form-field>
+    <mat-form-field [floatLabel]="'never'">
       <input matInput placeholder="Search" [(ngModel)]="search">
     </mat-form-field>
   </mat-toolbar>
@@ -22,18 +22,21 @@
   <mat-toolbar color="primary" *ngSwitchDefault>
     <mat-toolbar-row>
       <button mat-icon-button (click)="openMenu()">
-          <mat-icon aria-label="Menu">menu</mat-icon>
-        </button>
+        <mat-icon aria-label="Menu">menu</mat-icon>
+      </button>
       <span>{{ title | titlecase }}</span>
 
       <span class="toolbar-divider"></span>
 
       <button mat-icon-button (click)="toggleSearchMode()">
-          <mat-icon>search</mat-icon>
-        </button>
+        <mat-icon>search</mat-icon>
+      </button>
+      <button mat-icon-button [routerLink]="['/add/activity']">
+        <mat-icon>add</mat-icon>
+      </button>
       <button mat-icon-button [matMenuTriggerFor]="toolbar">
-          <mat-icon>more_vert</mat-icon>
-        </button>
+        <mat-icon>more_vert</mat-icon>
+      </button>
     </mat-toolbar-row>
 
     <!-- chrono -->

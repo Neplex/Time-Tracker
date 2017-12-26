@@ -3,7 +3,7 @@
     <span calendarMonth>{{ month.date | date:'MMMM yyyy' }}</span>
 
     <ng-container *ngFor="let day of month.days">
-      <span calendarDay [id]="day.date | date:'yyyyMMd'">
+      <span calendarDay [id]="day.date | date:'Dyyyy-MM-d'">
           {{ day.date | date:'dd' }}
           <small>{{ day.date | date:'EE' }}.</small>
         </span>
