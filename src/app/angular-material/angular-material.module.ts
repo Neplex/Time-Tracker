@@ -11,6 +11,9 @@ import {
   MatSelectModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatDialogModule,
+  MatMenuModule,
+  MatCardModule,
   MatPaginatorModule,
   MatSortModule,
   MatTableModule
