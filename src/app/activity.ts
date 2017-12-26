@@ -25,24 +25,24 @@ export class Activity {
 
   // Get total time spend on activity between two dates
   getTotalTime(startDate: Date, endDate: Date): number {
-  let d1 = new Date(startDate);
-  let d2 = new Date(endDate);
-  let elapsedTime = 0;
-  d2.setDate(d2.getDate()+1);
-  let start : Date = null;
-  let end : Date = null;
-  for(let i =0; i < this.time_slots.length;++i) {
-    start = this.time_slots[i].start;
-    end = this.time_slots[i].end;
-    if(startDate == null || (d1.getTime() <=start.getTime() && start.getTime() <= d2.getTime()) ) {
-      elapsedTime += this.time_slots[i].elapsedTime();
-      if( endDate != null && d2.getTime() < end.getTime()) {
-        elapsedTime -= end.getTime()-d2.getTime();
+    let d1 = new Date(startDate);
+    let d2 = new Date(endDate);
+    let elapsedTime = 0;
+    d2.setDate(d2.getDate() + 1);
+    let start: Date = null;
+    let end: Date = null;
+    for (let i = 0; i < this.time_slots.length; ++i) {
+      start = this.time_slots[i].start;
+      end = this.time_slots[i].end;
+      if (startDate == null || (d1.getTime() <= start.getTime() && start.getTime() <= d2.getTime())) {
+        elapsedTime += this.time_slots[i].elapsedTime();
+        if (endDate != null && d2.getTime() < end.getTime()) {
+          elapsedTime -= new TimeSlot(d2, end).elapsedTime();
+        }
       }
     }
+    return elapsedTime;
   }
-  return elapsedTime;
-}
 
   // Get time spend on activity durring the current time slot
   getCurrentTime(): number {
@@ -60,8 +60,7 @@ export class Activity {
   stop(): TimeSlot {
     let ts: TimeSlot = null;
     if (this.start_date) {
-      let d = new Date(this.getCurrentTime());
-      if (d.getHours() || d.getMinutes()) {
+      if (this.getCurrentTime() > 60000) {
         ts = new TimeSlot(this.start_date, new Date());
         this.addTimeSlot(ts);
       }
@@ -71,13 +70,13 @@ export class Activity {
   }
 
   //return true if the activity is in the category
-  hasCategory(name:String) : boolean {
-    for(let i = 0; i < this.categories.length;++i) {
-      if(name == this.categories[i]) {
+  hasCategory(name: String): boolean {
+    for (let i = 0; i < this.categories.length; ++i) {
+      if (name == this.categories[i]) {
         return true;
       }
-      return false;
     }
+    return false;
   }
 
 }

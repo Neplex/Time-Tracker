@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
+import { ChartsModule } from 'ng2-charts';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { AngularMaterialCalendarModule } from './angular-material-calendar/angular-material-calendar.module';
 import { DataStorageModule } from './data-storage/data-storage.module';
@@ -24,10 +25,9 @@ import { MainComponent } from './main/main.component';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
 import { ActivityListItemComponent } from './activity-list-item/activity-list-item.component';
 import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-confirm-dialog.component';
-
-
-//ng2-charts
-import { ChartsModule } from 'ng2-charts';
+import { StatsActivityListComponent } from './stats-activity-list/stats-activity-list.component';
+import { StatsGraphComponent } from './stats-graph/stats-graph.component';
+import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
 
 
 const routes: Routes = [
@@ -56,7 +56,10 @@ const routes: Routes = [
     MainComponent,
     MainToolbarComponent,
     ActivityListItemComponent,
-    DeleteConfirmDialogComponent
+    DeleteConfirmDialogComponent,
+    StatsActivityListComponent,
+    StatsGraphComponent,
+    DateRangePickerComponent
   ],
   imports: [
     BrowserModule,
@@ -65,10 +68,10 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
+    ChartsModule,
     AngularMaterialModule,
     AngularMaterialCalendarModule,
-    DataStorageModule,
-    ChartsModule
+    DataStorageModule
   ],
   entryComponents: [DeleteConfirmDialogComponent],
   providers: [],

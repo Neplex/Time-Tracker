@@ -1,9 +1,8 @@
-[content] {
+mat-card {
   display: flex;
   flex-direction: column;
 }
 
-[content]>* {
+mat-card>* {
   flex: 1 1;
-  margin: .7em;
 }
