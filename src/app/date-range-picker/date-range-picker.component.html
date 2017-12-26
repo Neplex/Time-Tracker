@@ -1,0 +1,21 @@
+<mat-form-field>
+  <input matInput [matDatepicker]="startDate" placeholder="Start date" disabled (dateChange)="setDateStart($event)" [value]="start">
+  <mat-datepicker touchUi="true" #startDate disabled="false"></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field>
+  <input matInput [matDatepicker]="endDate" placeholder="End date" disabled (dateChange)="setDateEnd($event)" [value]="end">
+  <mat-datepicker touchUi="true" #endDate disabled="false"></mat-datepicker>
+</mat-form-field>
+
+<div class="button-raw">
+  <button mat-button (click)="startDate.open()">
+    {{ start | date:'dd MMMM yyyy' }}
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+
+  <button mat-button (click)="endDate.open()">
+    {{ end | date:'dd MMMM yyyy' }}
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+</div>

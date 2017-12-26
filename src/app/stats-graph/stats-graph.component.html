@@ -1,0 +1,9 @@
+<mat-card>
+  <mat-card-title>
+    <span>{{totalTime | date:'H'}} hours and</span> {{totalTime | date:'m'}} minutes spent on activities
+  </mat-card-title>
+
+  <mat-card-content id="chart">
+    <canvas baseChart [data]="data" [labels]="labels" [chartType]="chartType" [colors]="colors" [options]="options"></canvas>
+  </mat-card-content>
+</mat-card>

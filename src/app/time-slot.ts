@@ -10,7 +10,7 @@ export class TimeSlot {
 
   // Get elapsed time
   elapsedTime(): number {
-    let gmt = this.end.getTimezoneOffset() * 60000;
-    return this.end.getTime() - this.start.getTime() + gmt;
+    return this.end.getTime() - this.start.getTime();
   }
+
 }

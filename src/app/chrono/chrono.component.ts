@@ -29,6 +29,7 @@ export class ChronoComponent implements OnInit {
   ngOnInit() {
     setInterval(() => {
       this.time = this.currentActivity != null ? this.currentActivity.getCurrentTime() : 0;
+      this.time += new Date().getTimezoneOffset() * 60000;
     }, 500);
   }
 

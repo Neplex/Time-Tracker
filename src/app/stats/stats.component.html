@@ -5,15 +5,8 @@
   <span>Statistics</span>
 </mat-toolbar>
 
-<!-- Total time -->
-
-<!-- Pie chart of time by category -->
-
-<!--
-List of activities
-
-Angular material table: (https://material.angular.io/components/table/overview)
-- pagination
-- sorting
-- filtering
--->
+<div content>
+  <app-date-range-picker [(start)]="dateStart" [(end)]="dateEnd"></app-date-range-picker>
+  <app-stats-graph [start]="dateStart" [end]="dateEnd"></app-stats-graph>
+  <app-stats-activity-list [start]="dateStart" [end]="dateEnd"></app-stats-activity-list>
+</div>
