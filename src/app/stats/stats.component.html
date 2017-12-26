@@ -1,0 +1,83 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button [routerLink]="['/']">
+    <mat-icon aria-label="Export">arrow_back</mat-icon>
+  </button>
+  <span>Statistics</span>
+</mat-toolbar>
+
+<div class="select_interval_date">
+  <mat-form-field class="start_date">
+  <input matInput [matDatepicker]="start" placeholder="Choose a start date" disabled
+          (dateChange)="setDateStart($event)" [value]="dateStart">
+  <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+  <mat-datepicker touchUi="true" #start disabled="false"></mat-datepicker>
+</mat-form-field>
+
+  <mat-form-field class="end_date">
+    <input matInput [matDatepicker]="end" placeholder="Choose a end date" disabled
+            (dateChange)="setDateEnd($event)" [value]="dateEnd">
+    <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+    <mat-datepicker touchUi="true" #end disabled="false"></mat-datepicker>
+  </mat-form-field>
+</div>
+
+
+<!-- Total time -->
+<div class="total_time">
+  <span>Total elapsed time : {{totalTime | date:'HH:mm:ss'}}</span>
+  <!--
+  -->
+</div>
+<!-- Pie chart of time by category -->
+<div style="display: block">
+  <!--
+<canvas baseChart #myChart="base-chart"></canvas>
+-->
+  <canvas baseChart class="donut"
+      [data]="categoriesData"
+      [labels]="chartLabels"
+      [chartType]="chartType"
+      [colors]="chartColors"
+      [options] = "chartOptions"
+      >
+  </canvas>
+</div>
+
+<!--
+List of activities
+
+Angular material table: (https://material.angular.io/components/table/overview)
+- pagination
+- sorting
+- filtering
+-->
+
+<div class="liste_activities">
+  <div>
+    <mat-form-field>
+      <input matInput (keyup)="filterTable($event.target.value)" placeholder="filter"/>
+    </mat-form-field>
+  </div>
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let activity"> {{activity.name}} </mat-cell>
+    </ng-container>
+
+    <!-- Elapsed Time Column -->
+    <ng-container matColumnDef="time">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Elapsed time </mat-header-cell>
+      <mat-cell *matCellDef="let activity"> {{getTempsActivity(activity) | date:'HH:mm:ss'}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedCols"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedCols;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="pagePaginator">
+  </mat-paginator>
+</div>

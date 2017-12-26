@@ -1,0 +1,41 @@
+<!-- Category add/edit/remove page  -->
+<mat-toolbar color="primary">
+  <button mat-icon-button [routerLink]="['/']">
+    <mat-icon aria-label="Close">close</mat-icon>
+  </button>
+  <span *ngIf="!id">New category</span>
+  <span *ngIf="id">Edit category</span>
+  <span class="toolbar-divider"></span>
+  <button mat-button (click)="saveCategory()">SAVE</button>
+</mat-toolbar>
+
+<form>
+  <mat-form-field>
+    <input [formControl]="nameFormControl" [(ngModel)]="category.name" name="category.name" placeholder="Name" matInput required (input)=verifyNameCategory()>
+    <mat-error *ngIf="nameFormControl.hasError('required')">
+      Name is <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf="nameFormControl.hasError('existName')">
+      Name already exist
+    </mat-error>
+  </mat-form-field>
+  <div class="mat-typography">
+    <p>Choose icon:</p>
+    <div class="icons">
+      <input [(ngModel)]="category.icon" [value]="null" type="radio" id="default" name="icon">
+      <label for="default" class="icon"><span id="spanDefault">EMPTY</span></label>
+      <ng-container *ngFor="let icon of icons | slice: paginationFrom(pageEvent) : paginationTo(pageEvent)">
+        <input [(ngModel)]="category.icon" [value]="icon" type="radio" id="{{icon}}" name="icon">
+        <label for="{{icon}}" class="icon"><mat-icon matListIcon>{{icon}}</mat-icon></label>
+      </ng-container>
+    </div>
+
+    <mat-paginator [length]="icons.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event"></mat-paginator>
+
+  </div>
+
+  <div class="mat-caption">
+    <span>* Required</span>
+  </div>
+
+</form>
