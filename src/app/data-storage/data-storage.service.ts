@@ -370,6 +370,32 @@ export class DataStorageService {
     this.dataBase.close();
   }
 
+  clearDB() {
+    let open;
+    open = this.openDB().subscribe((readyState) => {
+      let storeNames = this.dataBase.objectStoreNames;
+        for(let i=0; i<this.dataBase.objectStoreNames.length;++i ){
+          let transac: IDBTransaction = this.dataBase.transaction(storeNames.item(i), 'readwrite');
+          let store: IDBObjectStore = transac.objectStore(storeNames.item(i));
+          store.clear();
+        }
+    },null,() => {
+      open.unsubscribe();
+      console.log("Base nettoyée")
+      this.closeDB();
+    });
+  }
+
+  destroyDB(){
+    let request = indexedDB.deleteDatabase("TimeTracker");
+    request.onerror = function(event) {
+      console.log("Erreur lors de la suppression de la base");
+    };
+    request.onsuccess = function(event) {
+      console.log("Suppression de la base réussie");
+    };
+  }
+
   fromDBToActivity(x):Activity {
     let act = new Activity();
     act.name = x.name;

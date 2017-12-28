@@ -28,7 +28,7 @@ import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-con
 import { StatsActivityListComponent } from './stats-activity-list/stats-activity-list.component';
 import { StatsGraphComponent } from './stats-graph/stats-graph.component';
 import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
-
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   { path: 'activities', component: MainComponent },
@@ -38,6 +38,7 @@ const routes: Routes = [
   { path: 'add/category', component: CategoryComponent },
   { path: 'calendar', component: CalendarComponent },
   { path: 'stats', component: StatsComponent },
+  { path: 'settings', component: SettingsComponent },
   { path: '**', redirectTo: 'activities' }
 ];
 
@@ -59,7 +60,8 @@ const routes: Routes = [
     DeleteConfirmDialogComponent,
     StatsActivityListComponent,
     StatsGraphComponent,
-    DateRangePickerComponent
+    DateRangePickerComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
