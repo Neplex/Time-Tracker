@@ -10,3 +10,6 @@
 <form>
   <input type="file" (change)="fileEvent($event)" accept=".json"/>
 </form>
+
+<button mat-button id="clearDB" (click)="clearDB()">Nettoyer base de données</button>
+<button mat-button id="deleteDB" (click)="destroyDB()">Détruire base de données</button>

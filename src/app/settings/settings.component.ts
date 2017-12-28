@@ -39,7 +39,6 @@ export class SettingsComponent implements OnInit {
 
   fileEvent(e){
     let file:File=e.target.files[0];
-    console.log(e.target.files[0]);
     let reader:FileReader = new FileReader();
     reader.readAsText(file);
     reader.onload = (e:any) => {
@@ -52,6 +51,14 @@ export class SettingsComponent implements OnInit {
       }
     }
 
+  }
+
+  clearDB(){
+    this.dataBase.clearDB();
+  }
+
+  destroyDB(){
+    this.dataBase.destroyDB();
   }
 
 }
