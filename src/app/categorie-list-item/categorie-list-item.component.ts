@@ -35,8 +35,8 @@ export class CategorieListItemComponent implements OnInit {
         this.subscriptionUpdateCatInAct = this.dataBase.getActivities().subscribe(acts => {
           for(let i = 0; i < acts.length; i++){
             for(let j = 0; j < acts[i].categories.length; j++){
-              if(this.cat.name == acts[i].categories[j]){
-                acts[i].categories.splice(j,j);
+              if(this.cat.id == acts[i].categories[j]){
+                acts[i].categories.splice(j,1);
                 this.dataBase.saveActivity(acts[i]);
               }
             }

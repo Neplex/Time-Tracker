@@ -8,7 +8,7 @@ export const AVAILABLE_COLORS: string[] = [
 ]
 
 export const AVAILABLE_ICONS: string[] = [
-  "accessible", "account_balance", "alarm", "android", "assignment_late",
+  "default", "accessible", "account_balance", "alarm", "android", "assignment_late",
   "assignment_truned_in", "bookmark", "bug_report", "build", "card_travel",
   "code", "copyright", "event_seat", "extension", "face", "favorite",
   "fingerprint", "get_app", "grade", "help", "home", "https",

@@ -42,10 +42,14 @@ export class ActivityComponent implements OnInit {
     this.nameFormControl.setErrors({ existName: v });
   }
 
+  setRequired(v: boolean){
+    this.nameFormControl.setErrors({ required: v });
+  }
+
   ngOnInit() {
     this.subscriptionDB = this.dataBase.getCategories().subscribe(cats => {
       for(let i=0; i<cats.length; i++){
-        this.categories.push(cats[i].name);
+        this.categories.push(cats[i]);
       }
     });
 
@@ -101,20 +105,25 @@ export class ActivityComponent implements OnInit {
       }
     }
 
-    if(newAct){
-      this.nameFormControl.setValue(this.activity.name);
+    if(actInput != ""){
+      if(newAct){
+        this.nameFormControl.setValue(this.activity.name);
+      }
+      else{
+        this.dataBase.getActivity(actInput).subscribe(act => {
+          var activityFound = null;
+          if(actInput != ""){
+            this.nameFormControl.setValue(this.activity.name);
+            activityFound = (this.activity.name).toLowerCase();
+            if(actInput != actPram){
+              this.setExistName(true);
+            }
+          }
+        });
+      }
     }
     else{
-      this.dataBase.getActivity(actInput).subscribe(act => {
-        var activityFound = null;
-        if(actInput != ""){
-          this.nameFormControl.setValue(this.activity.name);
-          activityFound = (this.activity.name).toLowerCase();
-          if(actInput != actPram){
-            this.setExistName(true);
-          }
-        }
-      });
+      this.setRequired(true);
     }
 
   }
