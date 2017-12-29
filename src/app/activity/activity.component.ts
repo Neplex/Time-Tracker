@@ -26,7 +26,7 @@ export class ActivityComponent implements OnInit {
 
   public categoriesControl: FormControl;
 
-  private nameFormControl: FormControl;
+  public nameFormControl: FormControl;
 
   constructor(private router: Router, private route: ActivatedRoute, private dataBase: DataStorageService) {
     this.activity = new Activity();

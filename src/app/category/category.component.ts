@@ -26,7 +26,7 @@ export class CategoryComponent implements OnInit {
   public id: string;
   public newId: number;
 
-  private nameFormControl: FormControl;
+  public nameFormControl: FormControl;
 
   public pageEvent: PageEvent;
   public pageSize: number;
