@@ -7,6 +7,6 @@
 </mat-list-item>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item [routerLink]="['/categories', cat.name]">Edit</button>
+  <button mat-menu-item [routerLink]="['/categories', cat.id]">Edit</button>
   <button mat-menu-item (click)="confirmDelete()">Delete</button>
 </mat-menu>

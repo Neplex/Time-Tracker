@@ -24,8 +24,9 @@ export class CategoryComponent implements OnInit {
   public categories: Category[];
   public icons: string[];
   public id: string;
+  public newId: number;
 
-  private nameFormControl: FormControl;
+  public nameFormControl: FormControl;
 
   public pageEvent: PageEvent;
   public pageSize: number;
@@ -34,6 +35,7 @@ export class CategoryComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private dataBase: DataStorageService) {
     this.category = new Category();
     this.oldCategory = new Category();
+    this.newId = 0;
     this.icons = AVAILABLE_ICONS;
     this.nameFormControl = new FormControl('', [Validators.required]);
     this.pageSizeOptions = [20, 50, 100];
@@ -44,11 +46,11 @@ export class CategoryComponent implements OnInit {
     this.nameFormControl.setErrors({ existName: v });
   }
 
-  ngOnInit() {
+  setRequired(v: boolean){
+    this.nameFormControl.setErrors({ required: v });
+  }
 
-    this.subscription = this.dataBase.getCategories().subscribe(cats => {
-      this.categories = cats;
-    });
+  ngOnInit() {
 
     this.subscriptionParam = this.route.params.subscribe((param: any) => {
       if ((this.id = param['id']) != null) {
@@ -56,6 +58,29 @@ export class CategoryComponent implements OnInit {
           this.category = cats;
           this.oldCategory.name = cats.name;
         })
+        this.subscription = this.dataBase.getCategories().subscribe(cats => {
+          this.categories = cats;
+        });
+      }
+      else{
+        this.subscription = this.dataBase.getCategories().subscribe(cats => {
+          this.categories = cats;
+          this.newId = 0;
+          let tabId = [];
+          for(let i = 0; i<cats.length; i++){
+            tabId.push(cats[i].id);
+          }
+          tabId.sort();
+          for(let id of tabId){
+            if(this.newId == parseInt(id)){
+              this.newId ++;
+            }
+            else{
+              break;
+            }
+          }
+          this.category.id = this.newId.toString();
+        });
       }
     });
 
@@ -69,7 +94,9 @@ export class CategoryComponent implements OnInit {
     if(this.subscriptionDB){
       this.subscriptionDB.unsubscribe();
     }
-    this.subscription.unsubscribe();
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 
   paginationFrom(pageEvent) {
@@ -86,58 +113,50 @@ export class CategoryComponent implements OnInit {
   saveCategory() {
     if(this.nameFormControl.errors == null){
       this.category.name = (((this.category.name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
-      if (this.id && this.oldCategory.name != this.category.name) {
-        this.dataBase.deleteCategory(this.oldCategory);
-      }
+      // if (this.id && this.oldCategory.name != this.category.name) {
+      //   this.dataBase.deleteCategory(this.oldCategory);
+      // }
       this.dataBase.saveCategory(this.category);
 
-      // update liste categories d'une activity
-      this.subscriptionUpdateCatInAct = this.dataBase.getActivities().subscribe(acts => {
-        for(let i = 0; i < acts.length; i++){
-          for(let j = 0; j < acts[i].categories.length; j++){
-            if(this.id == acts[i].categories[j]){
-              acts[i].categories[j] = this.category.name;
-              this.dataBase.saveActivity(acts[i]);
-            }
-          }
-        }
-      });
       this.router.navigate(["activities"]);
     }
   }
 
   verifyNameCategory(){
     this.setExistName(false);
+    this.setRequired(false);
 
     let catInput = (((this.category.name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
-    let catPram = "";
-    if (this.id != null) {
-      catPram = (((this.id).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
-      catPram.replace(/[\s]{2,}/g," ");
-    }
 
     let newCat=true;
     for(var i=0; i<(this.categories).length; i++){
-      let catCompare = (((this.categories[i].name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
+      let catCompare = this.categories[i].name;
       if(catCompare == catInput){
         newCat=false;
       }
     }
 
-    if(newCat){
-      this.nameFormControl.setValue(this.category.name);
+    if(catInput != ""){
+      if(newCat){
+        this.nameFormControl.setValue(this.category.name);
+      }
+      else{
+        if(catInput != ""){
+          this.dataBase.getCategoryByName(catInput).subscribe(cat => {
+            var categoryFound = null;
+            if(catInput != ""){
+              this.nameFormControl.setValue(this.category.name);
+              categoryFound = (this.category.name).toLowerCase();
+              if(cat.id != this.id){
+                this.setExistName(true);
+              }
+            }
+          });
+        }
+      }
     }
     else{
-      this.dataBase.getCategory(catInput).subscribe(cat => {
-        var categoryFound = null;
-        if(catInput != ""){
-          this.nameFormControl.setValue(this.category.name);
-          categoryFound = (this.category.name).toLowerCase();
-          if(catInput != catPram){
-            this.setExistName(true);
-          }
-        }
-      });
+      this.setRequired(true);
     }
   }
 }

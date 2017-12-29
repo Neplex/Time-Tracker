@@ -41,8 +41,8 @@ export class DataStorageService {
          console.log('Upgrade');
          if(!('Categories' in this.dataBase.objectStoreNames)){
            console.log("Store Categories");
-           let cat = this.dataBase.createObjectStore("Categories",{ keyPath: "name"});
-           cat.createIndex("name","name",{unique:true});
+           let cat = this.dataBase.createObjectStore("Categories",{ keyPath: "id"});
+           cat.createIndex("id","id",{unique:true});
          }
          if(!('Activities' in this.dataBase.objectStoreNames)){
            console.log("Store Activities");
@@ -94,6 +94,7 @@ export class DataStorageService {
     }
     for(let i=0;i<3;++i){
       let cat:Category = new Category();
+      cat.id = i.toString();
       cat.name = "category "+i;
       cat.icon = "code";
       this.saveCategory(cat);
@@ -178,7 +179,7 @@ export class DataStorageService {
             let tmp:Activity = this.fromDBToActivity(x)
             let catTmp:string;
             for( catTmp of tmp.getCategories()){
-              if(cat.name == catTmp){
+              if(cat.id == catTmp){
                 acts.push(this.fromDBToActivity(x));
               }
             }
@@ -249,7 +250,7 @@ export class DataStorageService {
       let sub;
       let open;
       open = this.openDB().subscribe((readyState) => {
-        sub = this.getOne(name,"name",'Categories').subscribe((x) => {
+        sub = this.getOne(name,"id",'Categories').subscribe((x) => {
           cat = this.fromDBToCategory(x);
         },e => {
           observer.next(null);
@@ -259,6 +260,28 @@ export class DataStorageService {
           observer.next(cat);
           observer.complete();
         });
+      },null,() => {
+        open.unsubscribe();
+        this.closeDB();
+      });
+    });
+  }
+
+  getCategoryByName(name : string) {
+    return new Observable((observer: Observer<any>) => {
+      let cat: Category;
+      let sub;
+      let open;
+      open = this.openDB().subscribe((readyState) => {
+          sub = this.getAll('Categories').subscribe((x) => {
+            if(x.name == name){
+              cat = this.fromDBToCategory(x);
+            }
+          },null,() => {
+            sub.unsubscribe();
+            observer.next(cat);
+            observer.complete();
+          });
       },null,() => {
         open.unsubscribe();
         this.closeDB();
@@ -355,7 +378,7 @@ export class DataStorageService {
         let sub;
         let open;
         open = this.openDB().subscribe((readyState) => {
-            sub = this.deleteOne(c.name,"Categories").subscribe((x) => {
+            sub = this.deleteOne(c.id,"Categories").subscribe((x) => {
               console.log("Category: "+c.name+" deleted");
             },null,() => sub.unsubscribe());
         },null,() => {
@@ -413,6 +436,7 @@ export class DataStorageService {
 
   fromDBToCategory(x):Category{
     let cat = new Category();
+    cat.id = x.id;
     cat.name = x.name;
     cat.icon = x.icon;
     return cat;
