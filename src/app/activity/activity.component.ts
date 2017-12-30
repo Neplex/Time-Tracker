@@ -34,23 +34,21 @@ export class ActivityComponent implements OnInit {
     this.activities = [];
     this.categories = [];
     this.colors = AVAILABLE_COLORS;
-    this.categoriesControl = new FormControl({disabled: !this.categories.length});
+    this.categoriesControl = new FormControl({ disabled: !this.categories.length });
     this.nameFormControl = new FormControl('', [Validators.required]);
   }
 
-  setExistName(v: boolean){
+  setExistName(v: boolean) {
     this.nameFormControl.setErrors({ existName: v });
   }
 
-  setRequired(v: boolean){
+  setRequired(v: boolean) {
     this.nameFormControl.setErrors({ required: v });
   }
 
   ngOnInit() {
     this.subscriptionDB = this.dataBase.getCategories().subscribe(cats => {
-      for(let i=0; i<cats.length; i++){
-        this.categories.push(cats[i]);
-      }
+      this.categories = cats.sort((c1, c2) => c1.name.localeCompare(c2.name));
     });
 
     this.subscription = this.dataBase.getActivities().subscribe(acts => {
@@ -69,15 +67,15 @@ export class ActivityComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptionParam.unsubscribe();
-    if(this.subscriptionDB){
+    if (this.subscriptionDB) {
       this.subscriptionDB.unsubscribe();
     }
     this.subscription.unsubscribe();
   }
 
   saveActivity() {
-    if(this.nameFormControl.errors == null){
-      this.activity.name = (((this.activity.name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
+    if (this.nameFormControl.errors == null) {
+      this.activity.name = (((this.activity.name).toLowerCase()).replace(/[\s]{2,}/g, " ")).trim();
       if (this.id && this.oldActivity.name != this.activity.name) {
         this.dataBase.deleteActivity(this.oldActivity);
       }
@@ -86,43 +84,43 @@ export class ActivityComponent implements OnInit {
     }
   }
 
-  verifyNameActivity(){
+  verifyNameActivity() {
 
     this.setExistName(false);
     //replace(/[\s]{2,}/g," ") => supprime les doubles espaces ou plus
-    let actInput = (((this.activity.name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
+    let actInput = (((this.activity.name).toLowerCase()).replace(/[\s]{2,}/g, " ")).trim();
     let actPram = "";
     if (this.id != null) {
-      actPram = (((this.id).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
-      actPram.replace(/[\s]{2,}/g," ");
+      actPram = (((this.id).toLowerCase()).replace(/[\s]{2,}/g, " ")).trim();
+      actPram.replace(/[\s]{2,}/g, " ");
     }
 
-    let newAct=true;
-    for(var i=0; i<(this.activities).length; i++){
-      let actCompare = (((this.activities[i].name).toLowerCase()).replace(/[\s]{2,}/g," ")).trim();
-      if(actCompare == actInput){
-        newAct=false;
+    let newAct = true;
+    for (var i = 0; i < (this.activities).length; i++) {
+      let actCompare = (((this.activities[i].name).toLowerCase()).replace(/[\s]{2,}/g, " ")).trim();
+      if (actCompare == actInput) {
+        newAct = false;
       }
     }
 
-    if(actInput != ""){
-      if(newAct){
+    if (actInput != "") {
+      if (newAct) {
         this.nameFormControl.setValue(this.activity.name);
       }
-      else{
+      else {
         this.dataBase.getActivity(actInput).subscribe(act => {
           var activityFound = null;
-          if(actInput != ""){
+          if (actInput != "") {
             this.nameFormControl.setValue(this.activity.name);
             activityFound = (this.activity.name).toLowerCase();
-            if(actInput != actPram){
+            if (actInput != actPram) {
               this.setExistName(true);
             }
           }
         });
       }
     }
-    else{
+    else {
       this.setRequired(true);
     }
 

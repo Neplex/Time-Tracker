@@ -19,7 +19,7 @@ export class CategorieListComponent implements OnInit {
 
   ngOnInit() {
     this.subscription = this.dataBase.getCategories().subscribe(cats => {
-      this.categories = cats;
+      this.categories = cats.sort((c1, c2) => c1.name.localeCompare(c2.name));
     });
   }
 
@@ -31,7 +31,7 @@ export class CategorieListComponent implements OnInit {
     this.onCategorySelect.emit(cat);
   }
 
-  refresh(){
+  refresh() {
     this.subscription = this.dataBase.getCategories().subscribe(cats => {
       this.categories = cats;
     });

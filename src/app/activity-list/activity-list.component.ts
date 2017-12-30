@@ -17,13 +17,11 @@ export class ActivityListComponent implements OnInit {
     this._category = category;
     if (category == null) {
       this.subscription = this.dataBase.getActivities().subscribe(acts => {
-        this.activities = acts;
-        this._actlist = acts;
+        this._actlist = this.activities = acts.sort((a1, a2) => a1.name.localeCompare(a2.name));
       });
     } else {
       this.subscription = this.dataBase.getActivitiesByCategory(category).subscribe(acts => {
-        this.activities = acts;
-        this._actlist = acts;
+        this._actlist = this.activities = acts.sort((a1, a2) => a1.name.localeCompare(a2.name));
       });
     }
   }
