@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { DataStorageService } from '../data-storage/data-storage.service';
 
 import { Activity } from '../activity';
+import { Category } from '../category';
 
 @Component({
   selector: 'app-stats-graph',
@@ -33,10 +34,10 @@ export class StatsGraphComponent implements OnInit {
   private _start: Date;
   private _end: Date;
   private activities: Activity[] = [];
+  private categories: Category[] = [];
   private subscriptionCats: Subscription;
   private subscriptionActs: Subscription;
 
-  public catids: string[] = [];
   public labels: string[] = [];
   public data: number[] = [];
   public chartType: string = 'doughnut';
@@ -57,7 +58,7 @@ export class StatsGraphComponent implements OnInit {
           let time: number = +textSplit[textSplit.length - 1];
           time += new Date().getTimezoneOffset() * 60000;
           let datePipe = new DatePipe("en-US");
-          let elapsedTimeStr = datePipe.transform(new Date(time), "HH:mm:ss");//transform date into string as format HH:mm:ss
+          let elapsedTimeStr = datePipe.transform(new Date(time), "HH:mm");//transform date into string as format HH:mm:ss
           text = "";
           for (let i = 0; i < textSplit.length - 1; ++i) { // in case we have a category name with space
             text += textSplit[i] + " ";
@@ -68,17 +69,14 @@ export class StatsGraphComponent implements OnInit {
     }
   };
 
-  public totalTime: number = 0;
+  public totalTime: Date;
 
   constructor(private dataStorage: DataStorageService) { }
 
   ngOnInit() {
     this.subscriptionCats = this.dataStorage.getCategories().subscribe(cats => {
-      cats.forEach(a => {
-        this.catids.push(a.id);
-        this.labels.push(a.name);
-        this.data.push(0);
-      });
+      this.categories = cats;
+
       this.subscriptionActs = this.dataStorage.getActivities().subscribe(acts => {
         this.activities = acts;
         this.updateDate();
@@ -92,19 +90,32 @@ export class StatsGraphComponent implements OnInit {
   }
 
   updateDate(): void {
+    this.labels = [];
     this.data = [];
-    this.totalTime = 0;
-    this.catids.forEach(cat => {
+
+    this.categories.forEach(cat => {
       let val = 0;
+
+      // Sum all activities in category
       this.activities.forEach(act => {
-        if (act.hasCategory(cat)) {
+        if (act.hasCategory(cat.id)) {
           val += act.getTotalTime(this.start, this.end);
         }
       });
-      this.data.push(val);
-      this.totalTime += val;
+
+      if (val > 0) {
+        this.labels.push(cat.name);
+        this.data.push(val);
+      }
     });
-    this.totalTime += new Date().getTimezoneOffset() * 60000;
+
+    // Get total time
+    let tot: number = 0;
+    this.activities.forEach(act => {
+      tot += act.getTotalTime(this.start, this.end);
+    });
+    tot += new Date().getTimezoneOffset() * 60000;
+    this.totalTime = new Date(tot);
   }
 
 }
