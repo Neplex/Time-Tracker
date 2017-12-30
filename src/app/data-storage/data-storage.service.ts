@@ -41,7 +41,7 @@ export class DataStorageService {
          console.log('Upgrade');
          if(!('Categories' in this.dataBase.objectStoreNames)){
            console.log("Store Categories");
-           let cat = this.dataBase.createObjectStore("Categories",{ keyPath: "id"});
+           let cat = this.dataBase.createObjectStore("Categories",{ keyPath: "id",autoIncrement:true});
            cat.createIndex("id","id",{unique:true});
          }
          if(!('Activities' in this.dataBase.objectStoreNames)){
@@ -86,13 +86,14 @@ export class DataStorageService {
   initDataExamples(){
     console.log("Initialisation des données de test");
     let categories:Category[]=[];
+    let catids:number[] = [0,1,2];
     let catnames:string[] = ["Sport","Travail","Loisir"];
     let caticons:string[] = ["home","code","games"];
     let actnames:string[] = ["Badmington","Redaction memoire","Cinema","Ping-pong","Code"];
     let actdescs:string[] = ["L'as du volant","L'heure de gratter","Autrement appelé monopole Disney","J'ai perdu ma raquette","Pas celui de la route"];
     for(let i=0;i<3;++i){
       let cat:Category = new Category();
-      cat.id = i.toString();
+      cat.id = catids[i]+"" ;
       cat.name = catnames[i];
       cat.icon = caticons[i];
       categories.push(cat);
@@ -103,7 +104,7 @@ export class DataStorageService {
       act.name = actnames[i];
       act.color = AVAILABLE_COLORS[i];
       act.description = actdescs[i];
-      act.addCategory(catnames[i%3]);
+      act.addCategory(catids[i%3]+"");
       this.saveActivity(act);
     }
   }
@@ -186,6 +187,7 @@ export class DataStorageService {
             let tmp:Activity = this.fromDBToActivity(x)
             let catTmp:string;
             for( catTmp of tmp.getCategories()){
+              console.log("id: "+cat.id+" ||| cat:"+catTmp);
               if(cat.id == catTmp){
                 acts.push(this.fromDBToActivity(x));
               }

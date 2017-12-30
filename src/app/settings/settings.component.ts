@@ -50,11 +50,6 @@ export class SettingsComponent implements OnInit {
     reader.onload = (e: any) => {
       let data = JSON.parse(e.target.result);
       for (let act of data["activities"]) {
-        //let listtmp = act.time_slots;
-        //act.time_slots=[];
-        //for(let ts in listtmp){
-
-        //}
         let tmp = this.dataBase.fromDBToActivity(act);
         this.dataBase.saveActivity(tmp);
       }
