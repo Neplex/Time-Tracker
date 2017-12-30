@@ -16,7 +16,8 @@ import {
   MatCardModule,
   MatPaginatorModule,
   MatSortModule,
-  MatTableModule
+  MatTableModule,
+  MatSlideToggleModule
 } from '@angular/material';
 
 @NgModule({
@@ -34,7 +35,8 @@ import {
     MatDialogModule,
     MatMenuModule,
     MatCardModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSlideToggleModule
   ],
   exports: [
     MatButtonModule,
@@ -53,6 +55,7 @@ import {
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
+    MatSlideToggleModule
   ],
   declarations: []
 })

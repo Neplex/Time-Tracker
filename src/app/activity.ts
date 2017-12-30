@@ -70,9 +70,9 @@ export class Activity {
   }
 
   //return true if the activity is in the category
-  hasCategory(name: String): boolean {
+  hasCategory(id:string): boolean {
     for (let i = 0; i < this.categories.length; ++i) {
-      if (name == this.categories[i]) {
+      if (id == this.categories[i]) {
         return true;
       }
     }

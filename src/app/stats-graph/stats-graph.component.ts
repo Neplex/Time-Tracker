@@ -36,6 +36,7 @@ export class StatsGraphComponent implements OnInit {
   private subscriptionCats: Subscription;
   private subscriptionActs: Subscription;
 
+  public catids: string[] = [];
   public labels: string[] = [];
   public data: number[] = [];
   public chartType: string = 'doughnut';
@@ -74,6 +75,7 @@ export class StatsGraphComponent implements OnInit {
   ngOnInit() {
     this.subscriptionCats = this.dataStorage.getCategories().subscribe(cats => {
       cats.forEach(a => {
+        this.catids.push(a.id);
         this.labels.push(a.name);
         this.data.push(0);
       });
@@ -92,7 +94,7 @@ export class StatsGraphComponent implements OnInit {
   updateDate(): void {
     this.data = [];
     this.totalTime = 0;
-    this.labels.forEach(cat => {
+    this.catids.forEach(cat => {
       let val = 0;
       this.activities.forEach(act => {
         if (act.hasCategory(cat)) {

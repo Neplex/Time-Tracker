@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataStorageService } from '../data-storage/data-storage.service';
+import { DeleteConfirmDialogComponent } from '../delete-confirm-dialog/delete-confirm-dialog.component';
 import { Subscription } from 'rxjs';
+import { APP_VERSION } from '../global';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-settings',
@@ -9,16 +12,19 @@ import { Subscription } from 'rxjs';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(private dataBase:DataStorageService) { }
+  public app_version = APP_VERSION;
+  public dev_mode: boolean = false;
+
+  constructor(public dialog: MatDialog,private dataBase: DataStorageService) { }
 
   ngOnInit() {
     this.setDownloadFile();
   }
 
-  setDownloadFile(){
-    let subscriptionAct:Subscription;
-    let subscriptionCat:Subscription;
-    let data = {"activities":null,"categories":null};
+  setDownloadFile() {
+    let subscriptionAct: Subscription;
+    let subscriptionCat: Subscription;
+    let data = { "activities": null, "categories": null };
     subscriptionAct = this.dataBase.getActivities().subscribe(acts => {
       data["activities"] = acts;
       subscriptionCat = this.dataBase.getCategories().subscribe(cats => {
@@ -27,8 +33,8 @@ export class SettingsComponent implements OnInit {
         subscriptionCat.unsubscribe();
         let strdata = JSON.stringify(data);
         let blob = new Blob([strdata], { type: 'application/json' });
-        let url= window.URL.createObjectURL(blob);
-        let a:HTMLAnchorElement = (<HTMLAnchorElement>document.getElementById('export'));
+        let url = window.URL.createObjectURL(blob);
+        let a: HTMLAnchorElement = (<HTMLAnchorElement>document.getElementById('export'));
         a.download = "export.json";
         a.href = url;
       });
@@ -37,28 +43,41 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  fileEvent(e){
-    let file:File=e.target.files[0];
-    let reader:FileReader = new FileReader();
+  fileEvent(e) {
+    let file: File = e.target.files[0];
+    let reader: FileReader = new FileReader();
     reader.readAsText(file);
-    reader.onload = (e:any) => {
+    reader.onload = (e: any) => {
       let data = JSON.parse(e.target.result);
-      for(let act of data["activities"]){
-        this.dataBase.saveActivity(act);
+      for (let act of data["activities"]) {
+        let tmp = this.dataBase.fromDBToActivity(act);
+        this.dataBase.saveActivity(tmp);
       }
-      for(let cat of data["categories"]){
+      for (let cat of data["categories"]) {
         this.dataBase.saveCategory(cat);
       }
     }
 
   }
 
-  clearDB(){
-    this.dataBase.clearDB();
+  clearDB() {
+    let dialogRef = this.dialog.open(DeleteConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataBase.clearDB();
+      }
+    });
   }
 
-  destroyDB(){
-    this.dataBase.destroyDB();
+  destroyDB() {
+    let dialogRef = this.dialog.open(DeleteConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataBase.destroyDB();
+      }
+    });
   }
 
 }
