@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataStorageService } from '../data-storage/data-storage.service';
+import { DeleteConfirmDialogComponent } from '../delete-confirm-dialog/delete-confirm-dialog.component';
 import { Subscription } from 'rxjs';
 import { APP_VERSION } from '../global';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-settings',
@@ -13,7 +15,7 @@ export class SettingsComponent implements OnInit {
   public app_version = APP_VERSION;
   public dev_mode: boolean = false;
 
-  constructor(private dataBase: DataStorageService) { }
+  constructor(public dialog: MatDialog,private dataBase: DataStorageService) { }
 
   ngOnInit() {
     this.setDownloadFile();
@@ -58,11 +60,23 @@ export class SettingsComponent implements OnInit {
   }
 
   clearDB() {
-    this.dataBase.clearDB();
+    let dialogRef = this.dialog.open(DeleteConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataBase.clearDB();
+      }
+    });
   }
 
   destroyDB() {
-    this.dataBase.destroyDB();
+    let dialogRef = this.dialog.open(DeleteConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataBase.destroyDB();
+      }
+    });
   }
 
 }
