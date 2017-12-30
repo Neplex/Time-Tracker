@@ -85,19 +85,26 @@ export class DataStorageService {
 
   initDataExamples(){
     console.log("Initialisation des données de test");
-    for(let i=0;i<5;++i){
-      let act:Activity = new Activity();
-      act.name = "activity "+i;
-      act.color = AVAILABLE_COLORS[i];
-      act.description = "Je suis l'activité "+i;
-      this.saveActivity(act);
-    }
+    let categories:Category[]=[];
+    let catnames:string[] = ["Sport","Travail","Loisir"];
+    let caticons:string[] = ["home","code","games"];
+    let actnames:string[] = ["Badmington","Redaction memoire","Cinema","Ping-pong","Code"];
+    let actdescs:string[] = ["L'as du volant","L'heure de gratter","Autrement appelé monopole Disney","J'ai perdu ma raquette","Pas celui de la route"];
     for(let i=0;i<3;++i){
       let cat:Category = new Category();
       cat.id = i.toString();
-      cat.name = "category "+i;
-      cat.icon = "code";
+      cat.name = catnames[i];
+      cat.icon = caticons[i];
+      categories.push(cat);
       this.saveCategory(cat);
+    }
+    for(let i=0;i<5;++i){
+      let act:Activity = new Activity();
+      act.name = actnames[i];
+      act.color = AVAILABLE_COLORS[i];
+      act.description = actdescs[i];
+      act.addCategory(catnames[i%3]);
+      this.saveActivity(act);
     }
   }
 
@@ -428,7 +435,7 @@ export class DataStorageService {
       act.addCategory(cat);
     }
     for( let timeS of x.time_slots){
-      let timeSTmp = new TimeSlot(timeS.start,timeS.end);
+      let timeSTmp = new TimeSlot(new Date(timeS.start),new Date(timeS.end));
       act.addTimeSlot(timeSTmp);
     }
     return act;
