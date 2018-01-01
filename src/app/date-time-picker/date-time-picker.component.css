@@ -1,0 +1,9 @@
+.raw {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#date {
+  flex: 1 1;
+}

@@ -1,0 +1,19 @@
+<div class="raw">
+  <mat-form-field id="date">
+    <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="date = $event.value" [value]="date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi="true" #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Hours" [(ngModel)]="hours">
+      <mat-option *ngFor="let h of hoursList" [value]="h">{{ h }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Minutes" [(ngModel)]="minutes">
+      <mat-option *ngFor="let m of minutesList" [value]="m">{{ m }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
