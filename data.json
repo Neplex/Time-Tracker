@@ -1,0 +1,32 @@
+{"activities":[
+  {"name":"Badmington","description":"L'as du volant","color":"red","categories":["0"],
+    "time_slots":[
+      {"start":"2018-01-10T17:00:00.000Z","end":"2018-01-10T19:00:00.000Z"}
+      ],"start_date":null},
+  {"name":"Cinema","description":"Autrement appelé monopole Disney","color":"purple","categories":["2"],
+    "time_slots":[
+      {"start":"2018-01-09T20:15:00.000Z","end":"2018-01-09T23:45:00.000Z"},
+      {"start":"2018-01-08T19:00:00.000Z","end":"2018-01-08T22:55:00.000Z"}
+      ],"start_date":null},
+  {"name":"Code","description":"Pas celui de la route","color":"indigo","categories":["1"],
+    "time_slots":[
+      {"start":"2018-01-08T14:12:00.000Z","end":"2017-01-08T18:43:00.000Z"},
+      {"start":"2018-01-09T08:00:00.000Z","end":"2017-01-09T11:45:00.000Z"},
+      {"start":"2018-01-09T14:00:00.000Z","end":"2017-01-09T18:50:00.000Z"},
+      {"start":"2018-01-11T09:00:00.000Z","end":"2018-01-11T10:26:00.000Z"}
+      ],"start_date":null},
+  {"name":"Ping-pong","description":"J'ai perdu ma raquette","color":"deep-purple","categories":["0"],
+    "time_slots":[
+      {"start":"2018-01-08T11:05:00.000Z","end":"2018-01-08T12:12:00.000Z"}
+      ],"start_date":null},
+  {"name":"Redaction memoire","description":"L'heure de gratter","color":"pink","categories":["1"],
+    "time_slots":[
+      {"start":"2018-01-10T10:17:00.000Z","end":"2018-01-10T12:36:00.000Z"},
+      {"start":"2018-01-11T13:45:00.000Z","end":"2018-01-11T16:25:00.000Z"}
+      ],"start_date":null}
+  ],
+"categories":[
+  {"icon":"home","id":0,"name":"Sport"},
+  {"icon":"code","id":1,"name":"Travail"},
+  {"icon":"games","id":2,"name":"Loisir"}
+  ]}
