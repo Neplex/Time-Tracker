@@ -1,0 +1,15 @@
+<div calendar class="mat-typography">
+  <ng-container *ngFor="let month of calendar.months">
+    <span calendarMonth>{{ month.date | date:'MMMM yyyy' }}</span>
+
+    <ng-container *ngFor="let day of month.days">
+      <span calendarDay [id]="day.date | date:'Dyyyy-MM-d'">
+          {{ day.date | date:'dd' }}
+          <small>{{ day.date | date:'EE' }}.</small>
+        </span>
+
+      <mc-event *ngFor="let event of day.events" [event]=event></mc-event>
+
+    </ng-container>
+  </ng-container>
+</div>

@@ -1,0 +1,25 @@
+<mat-card>
+  <mat-form-field>
+    <input matInput (keyup)="filterTable($event.target.value)" placeholder="filter" />
+  </mat-form-field>
+
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-cell *matCellDef="let activity">{{activity.name}}</mat-cell>
+    </ng-container>
+
+    <!-- Elapsed Time Column -->
+    <ng-container matColumnDef="time">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Elapsed time</mat-header-cell>
+      <mat-cell *matCellDef="let activity">{{getActivityTime(activity) | date:'HH:mm:ss'}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedCols"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedCols;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="pagePaginator"></mat-paginator>
+</mat-card>

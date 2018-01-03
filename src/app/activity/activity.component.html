@@ -1,0 +1,45 @@
+<!-- Activity add/edit/remove page  -->
+<mat-toolbar color="primary">
+  <button mat-icon-button [routerLink]="['/']">
+    <mat-icon aria-label="Close">close</mat-icon>
+  </button>
+  <span *ngIf="!id">New activity</span>
+  <span *ngIf="id">Edit activity</span>
+  <span class="toolbar-divider"></span>
+  <button mat-button (click)="saveActivity()">SAVE</button>
+</mat-toolbar>
+
+<form>
+  <mat-form-field id="matFieldName">
+    <input [formControl]="nameFormControl" [(ngModel)]="activity.name" name="activity.name" placeholder="Name" matInput required (input)=verifyNameActivity()>
+    <mat-error *ngIf="nameFormControl.hasError('required')">
+      Name is <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf="nameFormControl.hasError('existName')">
+      Name already exist
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea [(ngModel)]="activity.description" name="activity.description" matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6"></textarea>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Categories" [formControl]="categoriesControl" [(ngModel)]="activity.categories" [disabled]="!categories.length" multiple>
+      <mat-option *ngFor="let cat of categories" [value]="cat.id">{{cat.name | titlecase}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Color" [(value)]="activity.color">
+      <mat-option></mat-option>
+      <mat-option *ngFor="let color of colors" [value]="color">
+        <span [ngClass]="color" class="colorList"></span> {{ color | titlecase}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="mat-caption">
+    <span>* Required</span>
+  </div>
+</form>

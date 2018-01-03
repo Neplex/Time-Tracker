@@ -1,0 +1,40 @@
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.button-raw {
+  display: flex;
+}
+
+form>* {
+  width: 100%;
+}
+
+.categoryList{
+  vertical-align: middle;
+  margin-left: .2em;
+  margin-right: .2em;
+}
+
+.colorList {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+
+mat-option {
+  vertical-align: middle;
+}
+
+mat-form-field{
+  padding-bottom: 1em;
+}
+
+.mat-caption{
+  color: rgba(0,0,0,.54);
+}
