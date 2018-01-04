@@ -55,4 +55,16 @@ export class TimeSlotComponent implements OnInit {
     this.router.navigate(["/calendar"]);
   }
 
+  dateStartChange() {
+    if (this.startDate > this.endDate) {
+      this.endDate = this.startDate;
+    }
+  }
+
+  dateEndChange() {
+    if (this.endDate < this.startDate) {
+      this.startDate = this.endDate;
+    }
+  }
+
 }

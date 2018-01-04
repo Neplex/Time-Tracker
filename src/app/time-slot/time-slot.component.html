@@ -12,6 +12,6 @@
     <input matInput disabled placeholder="Activity" [value]="activity.name">
   </mat-form-field>
 
-  <app-date-time-picker [(dateTime)]="startDate"></app-date-time-picker>
-  <app-date-time-picker [(dateTime)]="endDate"></app-date-time-picker>
+  <app-date-time-picker (change)="dateStartChange()" [(dateTime)]="startDate"></app-date-time-picker>
+  <app-date-time-picker (change)="dateEndChange()" [(dateTime)]="endDate"></app-date-time-picker>
 </form>

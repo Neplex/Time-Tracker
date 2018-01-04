@@ -9,6 +9,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 export class DateTimePickerComponent implements OnInit {
 
   @Output() dateTimeChange = new EventEmitter<Date>();
+  @Output('change') modif = new EventEmitter<void>();
 
   @Input()
   set dateTime(d: Date) {
@@ -25,18 +26,21 @@ export class DateTimePickerComponent implements OnInit {
   set date(d: Date) {
     this._date = d;
     this.dateTimeChange.emit(this.dateTime);
+    this.modif.emit();
   }
   get date(): Date { return this._date; }
 
   set hours(h: number) {
     this._hours = h;
     this.dateTimeChange.emit(this.dateTime);
+    this.modif.emit();
   }
   get hours(): number { return this._hours; }
 
   set minutes(m: number) {
     this._minutes = m;
     this.dateTimeChange.emit(this.dateTime);
+    this.modif.emit();
   }
   get minutes(): number { return this._minutes; }
 
