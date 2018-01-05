@@ -22,5 +22,5 @@
   </mat-toolbar>
 
   <!-- Calendar -->
-  <mc-calendar [events]=events [date]="date"></mc-calendar>
+  <mc-calendar [events]=events [date]="date" (onEventClick)="goToEvent($event)"></mc-calendar>
 </div>

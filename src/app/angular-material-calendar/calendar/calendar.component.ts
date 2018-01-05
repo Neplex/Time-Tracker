@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CalendarEvent } from '../calendar-event';
 import { Calendar } from '../calendar';
 
@@ -8,6 +8,8 @@ import { Calendar } from '../calendar';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
+
+  @Output() onEventClick = new EventEmitter<CalendarEvent>();
 
   @Input()
   set events(evs: CalendarEvent[]) {
@@ -28,6 +30,10 @@ export class CalendarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  eventClick(event: CalendarEvent) {
+    this.onEventClick.emit(event);
   }
 
 }

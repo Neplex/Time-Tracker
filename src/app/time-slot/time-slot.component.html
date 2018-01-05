@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button [routerLink]="['/calendar']">
+    <mat-icon aria-label="Close">close</mat-icon>
+  </button>
+  <span>Edit time slot</span>
+  <span class="toolbar-divider"></span>
+  <button mat-button (click)="save()">SAVE</button>
+</mat-toolbar>
+
+<form>
+  <mat-form-field>
+    <input matInput disabled placeholder="Activity" [value]="activity.name">
+  </mat-form-field>
+
+  <app-date-time-picker (change)="dateStartChange()" [(dateTime)]="startDate"></app-date-time-picker>
+  <app-date-time-picker (change)="dateEndChange()" [(dateTime)]="endDate"></app-date-time-picker>
+</form>

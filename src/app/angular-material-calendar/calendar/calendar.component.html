@@ -8,7 +8,7 @@
           <small>{{ day.date | date:'EE' }}.</small>
         </span>
 
-      <mc-event *ngFor="let event of day.events" [event]=event></mc-event>
+      <mc-event *ngFor="let event of day.events" [event]=event (click)="eventClick(event)"></mc-event>
 
     </ng-container>
   </ng-container>

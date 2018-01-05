@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from '../data-storage/data-storage.service';
@@ -17,15 +18,16 @@ export class CalendarComponent implements OnInit {
   public events: CalendarEvent[] = [];
   private subscription: Subscription;
 
-  constructor(private dataBase: DataStorageService) { }
+  constructor(private router: Router, private dataBase: DataStorageService) { }
 
   ngOnInit() {
 
     this.subscription = this.dataBase.getActivities().subscribe(acts => {
       let tab = [];
       acts.forEach(a => {
-        a.getTimeSlots().forEach(ts => {
+        a.getTimeSlots().forEach((ts, i) => {
           let event = new CalendarEvent(a.name, ts.start, ts.end, a.color);
+          event.data = { activity: a, ts: i };
           tab.push(event);
         });
       });
@@ -39,6 +41,12 @@ export class CalendarComponent implements OnInit {
 
   setToday(): void {
     this.date = new Date();
+  }
+
+  goToEvent(event: CalendarEvent) {
+    this.router.navigate([
+      "/activities", event.data.activity.name, "time-slots", event.data.ts
+    ]);
   }
 
 }

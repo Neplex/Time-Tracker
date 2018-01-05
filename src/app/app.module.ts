@@ -29,6 +29,8 @@ import { StatsActivityListComponent } from './stats-activity-list/stats-activity
 import { StatsGraphComponent } from './stats-graph/stats-graph.component';
 import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
 import { SettingsComponent } from './settings/settings.component';
+import { TimeSlotComponent } from './time-slot/time-slot.component';
+import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
 
 const routes: Routes = [
   { path: 'activities', component: MainComponent },
@@ -39,6 +41,7 @@ const routes: Routes = [
   { path: 'calendar', component: CalendarComponent },
   { path: 'stats', component: StatsComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'activities/:id/time-slots/:ts', component: TimeSlotComponent },
   { path: '**', redirectTo: 'activities' }
 ];
 
@@ -61,7 +64,9 @@ const routes: Routes = [
     StatsActivityListComponent,
     StatsGraphComponent,
     DateRangePickerComponent,
-    SettingsComponent
+    SettingsComponent,
+    TimeSlotComponent,
+    DateTimePickerComponent
   ],
   imports: [
     BrowserModule,
