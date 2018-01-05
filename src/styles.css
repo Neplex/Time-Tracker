@@ -1,1 +1,108 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.toolbar-divider {
+  flex: 1 1 auto;
+}
+
+.red {
+  background-color: #F44336;
+  color: white !important;
+}
+
+.pink {
+  background-color: #E91E63;
+  color: white !important;
+}
+
+.purple {
+  background-color: #9C27B0;
+  color: white !important;
+}
+
+.deep-purple {
+  background-color: #673AB7;
+  color: white !important;
+}
+
+.indigo {
+  background-color: #3F51B5;
+  color: white !important;
+}
+
+.blue {
+  background-color: #2196F3;
+  color: black !important;
+}
+
+.light-blue {
+  background-color: #03A9F4;
+  color: black !important;
+}
+
+.cyan {
+  background-color: #00BCD4;
+  color: black !important;
+}
+
+.teal {
+  background-color: #009688;
+  color: white !important;
+}
+
+.green {
+  background-color: #4CAF50;
+  color: black !important;
+}
+
+.light-green {
+  background-color: #8BC34A;
+  color: black !important;
+}
+
+.lime {
+  background-color: #CDDC39;
+  color: white !important;
+}
+
+.yellow {
+  background-color: #FFEB3B;
+  color: black !important;
+}
+
+.amber {
+  background-color: #FFC107;
+  color: black !important;
+}
+
+.orange {
+  background-color: #FF9800;
+  color: white !important;
+}
+
+.deep-orange {
+  background-color: #FF5722;
+  color: black !important;
+}
+
+.brown {
+  background-color: #795548;
+  color: white !important;
+}
+
+.grey {
+  background-color: #9E9E9E;
+  color: white !important;
+}
+
+.blue-grey {
+  background-color: #607D8B;
+  color: white !important;
+}

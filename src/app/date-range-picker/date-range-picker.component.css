@@ -1,0 +1,12 @@
+.button-raw {
+  display: flex;
+  flex-direction: row;
+}
+
+.button-raw>button {
+  flex: 1 1;
+}
+
+mat-form-field {
+  display: none;
+}

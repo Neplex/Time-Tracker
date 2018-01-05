@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mc-calendar {
+  flex: 1 1;
+  overflow-y: scroll;
+}
+
+mat-form-field {
+  display: none;
+}
+
+#datePicker {
+  flex: 1 1;
+  font-size: 1em;
+}

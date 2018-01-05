@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button [routerLink]="['/']">
+    <mat-icon aria-label="Export">arrow_back</mat-icon>
+  </button>
+  <span>Statistics</span>
+</mat-toolbar>
+
+<div content>
+  <app-date-range-picker [(start)]="dateStart" [(end)]="dateEnd"></app-date-range-picker>
+  <app-stats-graph [start]="dateStart" [end]="dateEnd"></app-stats-graph>
+  <app-stats-activity-list [start]="dateStart" [end]="dateEnd"></app-stats-activity-list>
+</div>

@@ -1,0 +1,18 @@
+<mat-nav-list *ngIf="activities.length; else emptyCard">
+  <app-activity-list-item [editMode]="editMode" [activity]="act" (onActivitySelect)="toggleActivity(act)" (onActivityDelete)="refresh()" *ngFor="let act of activities"></app-activity-list-item>
+</mat-nav-list>
+
+<!-- Template -->
+<ng-template #emptyCard>
+  <mat-card tabindex="0" id="emptyCard" color="accent">
+    <mat-card-title color="primary">It seems empty !</mat-card-title>
+    <mat-card-content>
+      To begin, you must add a new activity. Try pressing the button below.
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button [routerLink]="['/add/activity']">
+        NEW ACTIVITY
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</ng-template>

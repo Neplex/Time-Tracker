@@ -1,0 +1,44 @@
+<mat-toolbar color="primary">
+  <a mat-icon-button [routerLink]="['/']">
+    <mat-icon aria-label=" settings ">arrow_back</mat-icon>
+  </a>
+  <span>Settings</span>
+</mat-toolbar>
+
+<mat-nav-list>
+  <mat-list-item>
+    <mat-icon matListIcon>info_outline</mat-icon>
+    <h3 matLine>App version</h3>
+    <p>{{app_version}}</p>
+  </mat-list-item>
+
+  <mat-list-item>
+    <mat-icon matListIcon>developer_mode</mat-icon>
+    <h3 matLine>Developper mode</h3>
+    <mat-slide-toggle [checked]="dev_mode" (change)="dev_mode = $event.checked"></mat-slide-toggle>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+  <h3 matSubheader>Database</h3>
+
+  <a mat-list-item id="export">
+    <mat-icon matListIcon>file_upload</mat-icon>
+    <h3 matLine>Export database</h3>
+  </a>
+
+  <mat-list-item (click)="import_database.click()">
+    <input type="file" #import_database (change)="fileEvent($event)" accept=".json " />
+    <mat-icon matListIcon>file_download</mat-icon>
+    <h3 matLine>Import database</h3>
+  </mat-list-item>
+
+  <mat-list-item (click)="clearDB()">
+    <mat-icon matListIcon>delete</mat-icon>
+    <h3 matLine>Clean database</h3>
+  </mat-list-item>
+
+  <mat-list-item (click)="destroyDB()" *ngIf="dev_mode">
+    <mat-icon matListIcon>delete_forever</mat-icon>
+    <h3 matLine>Delete database</h3>
+  </mat-list-item>
+</mat-nav-list>

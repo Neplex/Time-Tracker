@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-title>
+    <span *ngIf="totalTime.getHours()">{{totalTime | date:'H'}} hours and</span> {{totalTime | date:'m'}} minutes spent on activities
+  </mat-card-title>
+
+  <mat-card-content>
+    <div id="chart" *ngIf="this.data.length; else notEnoughData">
+      <canvas baseChart [data]="data" [labels]="labels" [chartType]="chartType" [colors]="colors" [options]="options"></canvas>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #notEnoughData>
+  <h1>Not enough data to show.</h1>
+</ng-template>
