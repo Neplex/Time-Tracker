@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="dataSource.data.length">
   <mat-form-field>
     <input matInput (keyup)="filterTable($event.target.value)" placeholder="filter" />
   </mat-form-field>
@@ -14,7 +14,7 @@
     <!-- Elapsed Time Column -->
     <ng-container matColumnDef="time">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Elapsed time</mat-header-cell>
-      <mat-cell *matCellDef="let activity">{{getActivityTime(activity) | date:'HH:mm:ss'}}</mat-cell>
+      <mat-cell *matCellDef="let activity">{{getActivityTime(activity) | date:'HH:mm'}}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedCols"></mat-header-row>

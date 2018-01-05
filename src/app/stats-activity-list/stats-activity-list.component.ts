@@ -45,8 +45,15 @@ export class StatsActivityListComponent implements OnInit {
 
   constructor(private dataStorage: DataStorageService) {
     this.dataSource = new MatTableDataSource<Activity>();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  }
+
+  ngAfterViewChecked() {
+    if(this.paginator != null && this.dataSource.paginator == null) {
+      this.dataSource.paginator = this.paginator;
+    }
+    if(this.sort != null && this.dataSource.sort ==null){
+      this.dataSource.sort = this.sort;
+    }
   }
 
   ngOnInit() {
@@ -78,6 +85,8 @@ export class StatsActivityListComponent implements OnInit {
       }
     })
     this.dataSource.data = acts;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
 }
