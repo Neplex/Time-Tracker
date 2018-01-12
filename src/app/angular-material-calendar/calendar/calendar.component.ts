@@ -19,8 +19,11 @@ export class CalendarComponent implements OnInit {
 
   @Input()
   set date(d: Date) {
+    let year = d.getFullYear();
+    let month = (d.getMonth() < 9 ? "0" : "") + (d.getMonth() + 1);
+    let day = d.getDate();
     const dayElement = document.querySelector(
-      "#D" + d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
+      "#D" + year + "-" + month + "-" + day
     );
     if (dayElement) { dayElement.scrollIntoView(); }
   }
